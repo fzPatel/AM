@@ -78,7 +78,7 @@ int supportid=ub.getSupportid();
 </form>
 
 <form action="" method="Post">
-<h3><a href="./ViewassetRequestByEmp"> View Pending Employee request</a></h3>
+<h3><a href="./ViewassetRequestByEmp"> View Pending Employee request Status</a></h3>
 <input type="hidden" name="manager_id" value="<%=session.getAttribute("user_session")%>"/>
 </form>
 

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.mail.Session;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.JAXBException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.xml.sax.SAXException;
 
 import com.asset_management.beans.AdminBean;
+import com.asset_management.beans.AllocatedAssetsBean;
 import com.asset_management.beans.RequestBean;
 import com.asset_management.beans.UserBean;
 import com.asset_management.models.EmployeeModel;
@@ -65,17 +68,28 @@ public class EmployeeController
 //		
 //		return mv;
 //	}
+		
+	@RequestMapping("/Assettranfer")
 	
-	
-//	
-//	@RequestMapping("/change_password")
-//	
-//public ModelAndView changepwd()
-//	{
-//		
-//		ModelAndView mv = new ModelAndView("changeuserpassword");
-//			return mv;
-//}
+public ModelAndView assettransfermethod(HttpSession ss)
+	{
+		int userid=(int)ss.getAttribute("user_session");
+		System.out.println("user id aaja re"+userid);
+		EmployeeModel am = new EmployeeModel();
+		List<AllocatedAssetsBean> list= (List<AllocatedAssetsBean>) am.Fetchassetdata(userid);
+	     mv = new ModelAndView("assettransferfields");
+	     mv.addObject("List",list);
+	  
+	     if(list.isEmpty())
+	     {
+	    	 System.out.println(list+"emptylist");
+	     }
+	     else
+	    	 System.out.println(list);
+	   System.out.println(list+"list me aa ja re");
+	   
+			return mv;
+}
 //	//@RequestMapping
 //	@RequestMapping("/changeuserpassword") 
 //	public ModelAndView changepassword(@RequestParam int employeeid ,@RequestParam String password , String designation)
@@ -137,7 +151,7 @@ public class EmployeeController
     	   mv= new ModelAndView("Createrequestemployee");
     	   
     	   
-    	  mv.addObject("msg", "user successfully created");
+    	  mv.addObject("msg", "Request created successfully");
     	  
        }
 	return mv;
@@ -164,10 +178,7 @@ public class EmployeeController
 
 		
 		int employeeid=(Integer)session.getAttribute("user_session");
-
-		
-
-		System.out.println(employeeid);
+        System.out.println(employeeid);
 		
 		ModelAndView mv=null;
 		EmployeeModel am=new EmployeeModel();
@@ -260,6 +271,50 @@ public class EmployeeController
 		{
 			mv=new ModelAndView("Employee_change_password");
 			mv.addObject("passwordchanged","Password Has Been Changed");
+		}
+		else if(y==0){
+			mv=new ModelAndView("Employee_change_password");
+		mv.addObject("passwordchanged", "password doesn't match");
+		}
+		
+		return mv;
+	}
+	@RequestMapping("/Getoldpasswordemp") 
+	public ModelAndView getoldpassword(HttpSession ss,@RequestParam int employeeid)
+	{
+			
+		int employee_id=(int) ss.getAttribute("user_session");
+		
+		EmployeeModel um=new EmployeeModel();
+
+				System.out.println(employee_id);
+
+
+				String oldpassword=um.EmpgetMyOldPassword(employee_id);
+				System.out.println("Old Pass==>Controller Mai="+oldpassword);
+
+				
+			 mv=new ModelAndView("Employee_change_password");
+		      mv.addObject("oldpassword",oldpassword);
+		
+		      return mv;
+		}
+	@RequestMapping("/Employeechangepwdsubmit")
+	public ModelAndView manager_password_changed(HttpSession ss,@RequestParam String password)
+	{
+		int employee_id=(int) ss.getAttribute("user_session");
+
+		
+		System.out.println("Inside managerchangepwdsubmit");
+		System.out.println("Inside managerchangepwdsubmit"+ employee_id);
+		System.out.println("Inside managerchangepwdsubmit" +password);
+
+		
+		int y=new EmployeeModel().empchangepwd(employee_id,password);
+		if(y!=0)
+		{
+			mv=new ModelAndView("Employee_change_password");
+			mv.addObject("passwordchanged","password has been changed");
 		}
 		
 		return mv;

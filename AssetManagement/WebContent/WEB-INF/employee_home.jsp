@@ -4,6 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+
 <title>Insert title here</title>
 
 <style type="text/css">
@@ -18,28 +21,40 @@ height:100%;
 </head>
 
 <body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+   
+        </div>
+    <div>
+      <ul class="nav navbar-nav">
+	<li><a href="./backs" >Home</a></li>
+	<li> <a href="./Empviewmyprofile">Profile</a></li>
+<li><a href="./createrequestbyemp"> Create Request</a></li>
+<li><a href="./EmpViewmyrequest">view My request</a></li>
+<li><a href="./Myasset"> My assets</a></li>
+<li><a href="./Assettranfer"> Asset Transfer</a></li>
+<li><a href="./change_password"> Change your password</a></li>
+  <li><a href="./logout">Logout</a></li>
+      </ul>  
+    </div>
+  </div>
+</nav>
 
 <font color="blue"><h1>${oh}</h1>
 <center>
-<h2> EMPLOYEE HOME</h2>
-</center>
 
-<h2>   
-<center>
-<font color="Green"> Welcome ${adminsession}
+<h3 align="center"><font color="darkblue"> <h2>Welcome Employee${adminsession}<h2>   
+<h3 align="center"><font color="darkblue"> Your ID: ${user_session}</font></h3>
+<h3 align="center"><font color="darkblue">Manager-id:<%=session.getAttribute("My_Request_To_Id")%></font></h3>
+	<h3 align="center"><font color="blue"><%=session.getAttribute("Emailid")%> </font></h3>
+
 </center>
 </font></h2>
 
 
+<center>
 
-<h3><a href="./Empviewmyprofile"> Profile</a></h3>
-<h3><a href="./createrequestbyemp"> Create Request</a></h3>
-<h3><a href="./EmpViewmyrequest">view My request</a></h3>
-<h3><a href="./Myasset"> My assets</a></h3>
-<h3><a href="./Assettranfer"> Asset Transfer</a></h3>
-<h3> <a href="./ change_password"> Change your password</a></h3>
 
-<h3><a href="./logout"> <h2>LOGOUT</h2> </a></h3>
-</form>
 </body>
 </html>

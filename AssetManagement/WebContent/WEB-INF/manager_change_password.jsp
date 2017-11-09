@@ -29,9 +29,9 @@
 				url:'Getoldpassword',
 				data:data,
 				type:'Get',
-				success:function(result){{														
+				success:function(mid){{														
 					
-						if(result!=null){
+						if(mid!=null){
 						
 						$("#submitbtnid").hide();
 						}
@@ -107,14 +107,14 @@ return false;
 <form name="f1" action="./managerchangepwdsubmit" onsubmit="return matchpass()" method="post">
 
 <input size="5px" type="hidden"  value="<%=session.getAttribute("user_session")%>" readonly="readonly"/>
-<tr id="oldpasswordId"><td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter Old Password" required/>
+<tr id="oldpasswordId"><td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" title="Please Enter Old Password" placeholder="Enter Old Password" required/>
 	<div id="mid"></div>
 </td>
 </tr>
  
 <tr id="newpassword">
-<td>New Password:<input type="password" name="password" id="newpassword" placeholder="Enter New Password" required/></td></tr>  
-<tr><td>Conform Password:<input type="password" name="password2"  placeholder="Conform Password" required/></td></tr>
+<td>New Password:<input type="password" name="password" id="newpassword" title="Please Enter New Password" placeholder="Enter New Password" required/></td></tr>  
+<tr><td>Conform Password:<input type="password" name="password2" title="Please conform your Password"  placeholder="Conform Password" required/></td></tr>
 
 <tr><td>
 <center>

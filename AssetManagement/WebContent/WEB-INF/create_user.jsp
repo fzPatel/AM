@@ -128,6 +128,29 @@ height:100%;
 			
 	</script>
 	
+	
+	
+	  <script>
+         $(function() {
+            
+			  $( "#datepicker-12" ).datepicker(
+			  {
+   
+	minDate: new Date(),
+    //selectOtherMonths: true,
+   // changeMonth: true,
+//changeYear: true,
+  //  showButtonPanel: true,
+    dateFormat: 'dd-mm-yy'
+}
+			  
+			  );
+       
+			
+         });
+      </script>
+	
+	
 </head>
 
 <body>
@@ -145,10 +168,10 @@ height:100%;
 		<table>
 		<form action="./insertuser" id="form1" method="post">	
 			
-			<tr><td>First Name :</td><td><input type="text" name="firstname"  pattern="[A-Za-z- ]+" title="only alphabet" required/></td></tr>
-			<tr><td>Last Name :</td><td><input type="text" name="lastname" pattern="[A-Za-z- ]+" title="only alphabet" required/></td></tr>
-			<tr><td>Email :</td><td><input type="email" name="emailid"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  id="i1" required/></td></tr>
-			<tr><td>Password :</td><td><input type="text" id="i2" name="password" required/></td></tr>
+			<tr><td>First Name :</td><td><input type="text" name="firstname"  pattern="[A-Za-z-]+" title="only alphabet" required/></td></tr>
+			<tr><td>Last Name :</td><td><input type="text" name="lastname" pattern="[A-Za-z-]+" title="only alphabet" required/></td></tr>
+			<tr><td>E-mail :</td><td><input type="email" name="emailid"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Enter emailid" id="i1" required/></td></tr>
+			<tr><td>Password :</td><td><input type="text" id="i2" name="password" title="Enter your password" required/></td></tr>
 		
 		<tr>
 				<td>Designation :</td>
@@ -163,7 +186,7 @@ height:100%;
 			</tr> 
 		<tr id="feedmanagerid">
 			<td>New Employee Id:</td>
-			<td><input type="text"  id="id1" value="0" name="newemployeeid" placeholder="select employee id" required/></td>
+			<td><input type="text"  id="id1" value="0"  name="newemployeeid" placeholder="select employee id" required/></td>
 		</tr>
 			
 		<tr id="feedsupportid">
@@ -196,7 +219,7 @@ height:100%;
 					</tr>
 									
 			<tr><td>Mobile :</td><td><input type="text" name="mobile" maxlength="10" title="Enter Mobile Number" pattern="[0-9]{10}" required/></td></tr>
-			<tr><td>Date Of Joining :</td><td><input type="date" name="dateofjoining" required/></td></tr>
+			<tr><td>Date Of Joining :</td><td><input type="date" id="datepicker-12" name="dateofjoining" required/></td></tr>
 			<tr><td><input type="submit" value="submit"/></td></tr>
 		</form>
 		</table>

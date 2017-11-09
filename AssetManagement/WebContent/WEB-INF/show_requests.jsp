@@ -79,6 +79,12 @@ height:100%;
 										
 										<% 
 										}
+											else	if(l.getStatus()==0)
+											{%>									
+												<td><h6><font color="Red">Pending by manager</font></h6></td>
+											
+											<% 
+											}
 										
 										else	if(l.getStatus()==2)
 										{%>									
@@ -105,7 +111,7 @@ height:100%;
 											
 										}
 										
-										if((l.getDesignation().equals("manager"))||(l.getDesignation().equals("employee"))&&(l.getStatus()!=2))
+										if((l.getDesignation().equals("manager"))||(l.getDesignation().equals("employee"))&&(l.getStatus()!=2)&&(l.getStatus()!=0))
 										{
 										%>
 									
@@ -131,6 +137,14 @@ height:100%;
 										
 											<%
 										}
+											
+										else {
+											
+											%>
+											<td>	No operation performed by manager</td>
+											<%
+											
+										}
 											%>
 										
 									</tr>
@@ -140,6 +154,11 @@ height:100%;
 				</table>
 				</center>				
 			<%
+		}else
+		{
+			
+			%><center><h1> <font color="Red">No Pending Orders</font></h1></center><%
+			
 		}
 	%>
 	

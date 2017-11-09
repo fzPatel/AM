@@ -315,19 +315,6 @@ public ModelAndView deactive_employee(@RequestParam int employeeid,HttpSession s
 
 
 
-@RequestMapping("/Getoldpassword")
-public ModelAndView SupportPasswordExistsOrNot(@RequestParam int supportid)
-{
-	System.out.println("Controller mai Password checking chala.......");
-	 
-	 String password=new SupportModel().checkExistanceOfSupportPassword(supportid);
-	 mv=new ModelAndView("support_change_password");
-	 mv.addObject("see",password);
-	return mv;
-}
-
-
-
 //-------------------------------------//--------------
 @RequestMapping("/Getoldpassword") 
 public ModelAndView getoldpassword(HttpSession ss)
@@ -337,7 +324,7 @@ public ModelAndView getoldpassword(HttpSession ss)
 	
 			ManagerModel um=new ManagerModel();
 
-			System.out.println(manager_id);
+			System.out.println("managerid inside Getoldpassword"+manager_id);
 
 
 			String oldpassword=um.getMyOldPassword(manager_id);
@@ -349,9 +336,6 @@ public ModelAndView getoldpassword(HttpSession ss)
 	
 	return mv;
 	}
-
-
-
 
 
 

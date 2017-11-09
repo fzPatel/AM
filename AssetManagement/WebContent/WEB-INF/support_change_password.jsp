@@ -112,9 +112,6 @@ height:100%;
 		
 		
 		
-		
-		
-		
 		<form name="f1" action="./supportpasswordchanged" onsubmit="return matchpass()" method="post">
 		 <table>	
 			<tr id="oldpasswordId">

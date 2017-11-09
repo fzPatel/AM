@@ -2,7 +2,10 @@ package com.asset_management.models;
 
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.bind.JAXBException;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -13,8 +16,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.xml.sax.SAXException;
 
 import com.asset_management.beans.AdminBean;
+import com.asset_management.beans.AllocatedAssetsBean;
 import com.asset_management.beans.RequestBean;
 import com.asset_management.beans.UserBean;
 
@@ -249,5 +254,110 @@ public String get_Perticulardesignation(int employeeid,String designation)
 	
 
 	
-}}
+}
+public List<AllocatedAssetsBean> Fetchassetdata(int userid)
+{
+	
+	int x=0;	
+	 
+	ArrayList <AllocatedAssetsBean> list2= new ArrayList<>();
+	
+		SessionFactory sf= new AnnotationConfiguration().configure().buildSessionFactory();		
+		Session ss=sf.openSession();
+		Transaction tx1=ss.beginTransaction();
+		String hql = "select assetname FROM AllocatedAssetsBean where userid=:a ";
+		
+		Query query = ss.createQuery(hql);
+		query.setInteger("a", userid);
+		List list = query.list();
+		Iterator it =list.iterator();
+		while(it.hasNext()){
+			AllocatedAssetsBean ab= new AllocatedAssetsBean();
+			ab.setAssetname((String)(it.next()));
+			list2.add(ab);
+		}
+		/*Criteria ct = ss.createCriteria(AllocatedAssetsBean.class);
+		ct.add(Restrictions.eq("userid", userid ));
+		System.out.println("employeemodel--->fetchassetdta--->uid"+userid);
+	   ct.add(Restrictions.eq("assetname",  "assetname" ));*/
+		
+	     /*List<AllocatedAssetsBean>list=(List<AllocatedAssetsBean>)query.list();*/
+	   tx1.commit();
+		ss.close();
+		return list2;
+	
+		
+	}
+
+public String EmpgetMyOldPassword(int employee_id)
+{	
+		String password=null;
+		try
+		{
+			System.out.println("Model mai Password checking chala.......");
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();				
+			
+			Criteria ct=ss.createCriteria(UserBean.class);		
+			ct.add(Restrictions.eq("employeeid",employee_id));
+			List<UserBean> list=ct.list();
+			
+			if(list.isEmpty())
+			{}
+			else
+			{
+				for(UserBean u:list)
+				{
+					
+					password=u.getPassword();
+
+				}
+			}
+			tx1.commit();
+			ss.close();
+		}
+		catch(Exception e)
+		{e.printStackTrace();}
+		
+	return password;
+	
+	
+}	
+
+
+
+public int empchangepwd(int employee_id,String password)
+{
+	int x=0;
+
+	try
+	{
+		
+		
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();
+			Query q=ss.createQuery("update UserBean set password=:a where employeeid=:b and designation=:c");
+			q.setString("a",password);
+			q.setInteger("b",employee_id);
+			q.setString("c","employee");		
+			x=q.executeUpdate();
+			System.out.println("xxxxxxxx=======>"+x);
+			tx1.commit();
+			ss.close();
+				
+		}
+		catch(Exception e)
+		{e.printStackTrace();
+		
+		
+		}
+		
+		return x;
+				
+	}
+
+
+}
 

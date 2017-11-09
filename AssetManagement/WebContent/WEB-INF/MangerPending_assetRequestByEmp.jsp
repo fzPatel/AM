@@ -37,7 +37,6 @@ height:100%;
 </nav>
 
 
-
 <h1>Pending Asset Requested </h1>
 
 
@@ -105,13 +104,11 @@ if(o instanceof RequestBean)
 											<td><h5><font color="Red">Rejected by Support</font></h5></td>
 										<%}
 %>
-
 <td><%=ub.getEmailid()%></td>
 
 <td colspan="2">
 				<form action="./aprooveEmprequest">
 				<input type="hidden" name="employeeid" value="<%=ub.getEmployeeid()%>"/>
-		
 				<input type="hidden" name="requestid" value="<%=ub.getRequestid()%>"/>
 				<input type="submit" name="submit" value="approve"/>												
 					</form>

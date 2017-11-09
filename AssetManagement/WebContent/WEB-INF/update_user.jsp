@@ -16,6 +16,8 @@ height:100%;
 }
 </style>
 
+
+
 </head>
 
 <body>
@@ -36,12 +38,46 @@ height:100%;
 				<table border="1">
 							
 					
-					<tr><td><font color="orange"> First Name</font></td><td><input type="text" name="firstname" pattern="[A-Za-z- ]+" title="only alphabet" value="<%=eb.getFirstname()%>"required/>&nbsp;</td></tr>
-					<tr><td><font color="orange"> Last Name</font></td><td><input type="text" name="lastname" pattern="[A-Za-z- ]+" title="only alphabet" value="<%=eb.getLastname()%>"required/>&nbsp;</td></tr>
+					<tr><td><font color="orange"> First Name</font></td><td><input type="text" name="firstname" pattern="[A-Za-z-]+" title="only alphabet" value="<%=eb.getFirstname()%>"readonly/>&nbsp;</td></tr>
+					<tr><td><font color="orange"> Last Name</font></td><td><input type="text" name="lastname" pattern="[A-Za-z-]+" title="only alphabet" value="<%=eb.getLastname()%>"readonly/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Email Id</font></td><td><input type="email" name="emailid" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<%=eb.getEmailid()%>" readonly/>&nbsp;</td></tr>
 				
 					
-					<tr><td><font color="orange"> Designation</font></td><td><input type="text" name="designation" value="<%=eb.getDesignation()%>"required/>&nbsp;</td></tr>
+					<!-- <tr><td><font color="orange"> Designation</font></td><td><input type="text" name="designation" value="<%=eb.getDesignation()%>" required/>&nbsp;</td></tr> -->
+					
+					<tr>
+						<td>Designation :</td>
+						<td>
+							<select name="designation" id="designation" required>
+							<%
+							if(eb.getDesignation().equals("employee"))
+							{
+							%>
+								<option value="<%=eb.getDesignation()%>"><%=eb.getDesignation()%></option>
+								<option value="manager">manager</option>
+								<option value="support">support</option>
+							<%
+							}
+							else if(eb.getDesignation().equals("manager"))
+							{
+							%>
+								<option value="<%=eb.getDesignation()%>"><%=eb.getDesignation()%></option>
+								<option value="employee">employee</option>
+								<option value="support">support</option>
+							<%
+							}
+							else if(eb.getDesignation().equals("support"))
+							{
+							%>
+								<option value="<%=eb.getDesignation()%>"><%=eb.getDesignation()%></option>
+								<option value="manager">manager</option>
+								<option value="employee">employee</option>
+							<%
+							}
+							%>	
+							</select>
+						</td>
+					</tr> 
 					<%if(eb.getDesignation().equals("support"))
 					{
 						%>
@@ -68,9 +104,9 @@ height:100%;
 					}
 					%>
 					
-					<tr><td><font color="orange">Mobile </font></td><td><input type="text" name="mobile" value="<%=eb.getMobile()%>"required/>&nbsp;</td></tr>
-					<tr><td><font color="orange">Date Of Joining</font></td><td><input type="date" name="dateofjoining" value="<%=eb.getDateofjoining()%>"required/>&nbsp;</td></tr>
-					<tr><td><font color="orange"> Status</font></td><td><input type="text" name="status" value="<%=eb.getStatus()%>"required/>&nbsp;</td></tr>
+					<tr><td><font color="orange">Mobile </font></td><td><input type="text" name="mobile" value="<%=eb.getMobile()%>" readonly/>&nbsp;</td></tr>
+					<tr><td><font color="orange">Date Of Joining</font></td><td><input type="date" name="dateofjoining" value="<%=eb.getDateofjoining()%>" readonly/>&nbsp;</td></tr>
+					<tr><td><font color="orange"> Status</font></td><td><input type="text" name="status" value="<%=eb.getStatus()%>"readonly/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Auto Incremented Id</font></td><td><input type="text" name="auto" value="<%=eb.getAuto()%>" readonly/>&nbsp;</td></tr>
 					
 			

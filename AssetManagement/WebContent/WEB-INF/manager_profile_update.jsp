@@ -67,7 +67,7 @@ int supportid=ub1.getSupportid();
 					
 					<tr><td><font color="orange"> First Name</font></td><td><input type="text" name="firstname" pattern="[A-Za-z- ]+" title="only alphabet" value="<%=eb.getFirstname()%>"required/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Last Name</font></td><td><input type="text" name="lastname" pattern="[A-Za-z- ]+" title="only alphabet" value="<%=eb.getLastname()%>"required/>&nbsp;</td></tr>
-					<tr><td><font color="orange"> Email Id</font></td><td><input type="email" name="emailid" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<%=eb.getEmailid()%>"required />&nbsp;</td></tr>
+					<tr><td><font color="orange"> Email Id</font></td><td><input type="email" name="emailid" title="Example - abc@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<%=eb.getEmailid()%>"required />&nbsp;</td></tr>
 					<tr><td><font color="orange"> Manager Id</font></td><td><input type="text" name="managerid" value="<%=eb.getManagerid()%>" readonly/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Designation</font></td><td><input type="text" name="designation" value="<%=eb.getDesignation()%>"readonly/>&nbsp;</td></tr>
 					<tr><td><font color="orange">Mobile </font></td><td><input type="Number" name="mobile" maxlength="10" title="Enter Mobile Number" pattern="[0-9]{10}" value="<%=eb.getMobile()%>"required/>&nbsp;</td></tr>
