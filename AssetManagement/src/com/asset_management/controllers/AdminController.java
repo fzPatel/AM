@@ -1,7 +1,10 @@
 package com.asset_management.controllers;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.asset_management.beans.AdminBean;
 import com.asset_management.beans.UserBean;
 import com.asset_management.models.AdminModel;
+import com.asset_management.models.ManagerModel;
 
 
 
@@ -292,4 +296,40 @@ ModelAndView mv=null;
 		}
 		return mv;
 	}
+
+
+
+
+	//-------------------------------------//--------------
+	@RequestMapping("/AdminCheckOldpwd") 
+	public void getoldpassword(HttpServletResponse response,@RequestParam String oldpassword,HttpSession ss)
+	{
+			
+		int manager_id=420;
+		
+		String user=(String)ss.getAttribute("admin_session");
+		//int manager_id=(Integer)ss.getAttribute("user_session");
+
+				AdminModel am=new AdminModel();
+
+				System.out.println("oldpassword inside Getoldpassword"+oldpassword);
+				System.out.println("admin inside Getoldpassword"+user);
+				
+				
+				int x=am.getMyOldPassword(oldpassword,user);
+				System.out.println("Old Pass"+oldpassword);
+
+			PrintWriter out = null;
+			try {
+				out = response.getWriter();
+			} catch (IOException e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+			 	out.println(x);	
+			 	System.out.println(x);
+
+		}
+
+
 }

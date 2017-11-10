@@ -21,6 +21,49 @@
 		}  
 		}  
 </script>
+		
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function()
+	{
+			$("#oldpassword").blur(function(){
+				
+			var data="oldpassword="+$("#oldpassword").val();
+					alert("oldpassword"+data);
+					$.ajax({
+						url:'AdminCheckOldpwd',
+						data:data,
+						type:'post',
+						success:function(result)
+						{
+							if(result.match(0))
+								{
+								
+								 $("#printmsg").html("Password does not match");
+								 $("#btnSubmit").prop('disabled', true);
+
+								}
+							else if(result.match(1))
+							{
+							
+
+							}
+						}
+						
+					})
+			});
+		
+			
+			
+		}
+		
+		
+		
+		);
+</script>
+
 </head>
 <body>
 
@@ -49,7 +92,7 @@
 		 <table>	
 			<tr id="oldpasswordId">
 				<td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter Old Password" required/>
-					<div id="mid"></div>
+					<div id="printmsg"></div>
 				</td>
 			</tr>
 			 
@@ -61,7 +104,7 @@
 			</tr>
 			
 			
-			<tr><td></td><td><input type="submit" name="submit" value="ok"/></td></tr>
+			<tr><td></td><td><input type="submit" name="submit" id="btnSubmit" value="ok"/></td></tr>
 		  </table>
 		  	
 		</form>		

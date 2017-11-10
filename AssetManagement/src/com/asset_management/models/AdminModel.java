@@ -13,7 +13,7 @@ import javax.persistence.Id;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import javax.mail.Session;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
@@ -545,23 +545,20 @@ public class AdminModel {
 	}
 	
 
-public void sendMail(int userid,String pwd, String designation,String email )
+
+public void sendMail(int userid,String pwd, String designation,String email)
 {
-	
-	System.out.println(userid);
-	System.out.println(pwd);
-	System.out.println(designation);
-	System.out.println(email);
-	
 	String to = email;
-      String sub="Asset Managment";
+      String sub="Asset Management Account Creation";
       
+      
+      System.out.println("Insode Mailmethod "+"Userid"+userid+"pwd="+pwd+"emailid"+email );
       
 //      String msg="Welcome at out site and your user id="+userid1+", password="+password1+", designation="+designation1;
       // Sender's email ID needs to be mentioned
-      String msg="Welcome at Asset Managment and your user id="+userid+", password="+pwd+", Designation="+designation+" ";
-      String from = "wkhan0149@gmail.com";
-      final String username = "wkhan0149@gmail.com";//change accordingly
+      String msg="Welcome To Asset Management your user id="+userid+", password="+pwd+", Email="+email+" Designation is-"+designation;
+      String from = "wkhan0419@gmail.com";
+      final String username = "wkhan0419@gmail.com";//change accordingly
       final String password ="10kamilk";//change accordingly
      // final String designation=designation1;
 
@@ -576,7 +573,8 @@ public void sendMail(int userid,String pwd, String designation,String email )
       props.put("mail.smtp.port", "587");
 
       // Get the Session object.
-      javax.mail.Session session= Session.getInstance(props,new javax.mail.Authenticator() {
+      javax.mail.Session session =  javax.mail.Session.getInstance(props,
+      new javax.mail.Authenticator() {
          protected PasswordAuthentication getPasswordAuthentication() {
             return new PasswordAuthentication(username, password);
          }
@@ -608,5 +606,50 @@ public void sendMail(int userid,String pwd, String designation,String email )
     	     }
 
 }
+
+
+
+
+
+public int getMyOldPassword(String oldpassword,String emailid)
+{	
+		int x=0;
+		try
+		{
+			System.out.println("Model mai Password checking chala.......");
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();				
+			
+			Criteria ct=ss.createCriteria(AdminBean.class);
+			ct.add(Restrictions.eq("password",oldpassword));
+			ct.add(Restrictions.eq("emailid",emailid));
+
+			List<UserBean> list=ct.list();
+			
+			if(list.isEmpty())
+			{
+				x=0;
+				
+			}
+			else if(!list.isEmpty())
+			{
+				x=1;
+			}
+			tx1.commit();
+			ss.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		System.out.println(e);
+		}
+		
+	return x;
 	
+	
+}	
+
+
 }
