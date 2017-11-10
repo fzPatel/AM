@@ -465,7 +465,7 @@ public int changepwd(int manager_id,String password)
 	}
 
 
-public int getMyOldPassword(int oldpassword,int manager_id)
+public int getMyOldPassword(String oldpassword,int manager_id)
 {	
 		int x=0;
 		try
@@ -494,7 +494,11 @@ public int getMyOldPassword(int oldpassword,int manager_id)
 			ss.close();
 		}
 		catch(Exception e)
-		{e.printStackTrace();}
+		{
+			e.printStackTrace();
+			
+		System.out.println(e);
+		}
 		
 	return x;
 	

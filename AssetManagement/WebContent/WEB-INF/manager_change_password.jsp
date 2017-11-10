@@ -21,21 +21,20 @@
 <script type="text/javascript">
 
 $(document).ready(function()
-		{
-	
+	{
 			$("#oldpassword").blur(function(){
 				
 			var data="oldpassword="+$("#oldpassword").val();
 					alert("oldpassword"+data);
-					
 					$.ajax({
-						url:'Getoldpassword',
+						url:'CheckOldpwd',
 						data:data,
 						type:'post',
 						success:function(result)
 						{
 							if(result.match(0))
 								{
+								
 								 $("#printmsg").html("Password does not match");
 								 $("#btnSubmit").prop('disabled', true);
 
@@ -43,7 +42,6 @@ $(document).ready(function()
 							else if(result.match(1))
 							{
 							
-							 $("#btnSubmit").prop('disabled', false);
 
 							}
 						}
@@ -122,9 +120,9 @@ return false;
 
 <input size="5px" type="hidden"  value="<%=session.getAttribute("user_session")%>" readonly="readonly"/>
 <tr><td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" title="Please Enter Old Password" placeholder="Enter Old Password" required/>
-	<div id="printmsg"></div>
 </td>
 </tr>
+<tr><td id="printmsg"></td></tr>
  
 <tr id="newpassword">
 <td>New Password:<input type="password" name="password" id="newpassword" title="Please Enter New Password" placeholder="Enter New Password" required/></td></tr>  

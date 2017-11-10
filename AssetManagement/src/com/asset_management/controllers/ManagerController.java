@@ -314,12 +314,11 @@ public ModelAndView deactive_employee(@RequestParam int employeeid,HttpSession s
 
 
 //-------------------------------------//--------------
-@RequestMapping("/Getoldpassword") 
-public void getoldpassword(HttpServletResponse response,@RequestParam int oldpassword,HttpSession ss)
+@RequestMapping("/CheckOldpwd") 
+public void getoldpassword(HttpServletResponse response,@RequestParam String oldpassword,HttpSession ss)
 {
 		
-	int manager_id=220;
-	
+	int manager_id=420;
 	
 	//int manager_id=(Integer)ss.getAttribute("user_session");
 
@@ -340,10 +339,11 @@ public void getoldpassword(HttpServletResponse response,@RequestParam int oldpas
 		try {
 			out = response.getWriter();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println(e);
 			e.printStackTrace();
 		}
 		 	out.println(x);	
+		 	System.out.println(x);
 
 	}
 
@@ -370,10 +370,11 @@ public void checkemailifexist(HttpServletResponse response,@RequestParam String 
 		try {
 			out = response.getWriter();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+System.out.println(e);	
+e.printStackTrace();
 		}
 		 	out.println(x);	
+		 	System.out.println(x);
 
 	}
 
