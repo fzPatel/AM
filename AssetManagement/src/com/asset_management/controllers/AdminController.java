@@ -305,7 +305,6 @@ ModelAndView mv=null;
 	public void getoldpassword(HttpServletResponse response,@RequestParam String oldpassword,HttpSession ss)
 	{
 			
-		int manager_id=420;
 		
 		String user=(String)ss.getAttribute("admin_session");
 		//int manager_id=(Integer)ss.getAttribute("user_session");
@@ -332,4 +331,6 @@ ModelAndView mv=null;
 		}
 
 
+	
+	
 }

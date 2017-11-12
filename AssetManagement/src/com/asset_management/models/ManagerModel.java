@@ -559,7 +559,7 @@ return al;
 
 //email alredy exixt hai k nahi by ajax--------------//
 
-public int checkemailifexist(String emailid)
+public int checkemailifexist(String emailid, int managerid)
 {
 		int x=0;
 try
@@ -570,20 +570,28 @@ try
 	
 		Criteria ct=ss.createCriteria(UserBean.class);		
 		ct.add(Restrictions.eq("emailid",emailid));
-
+		/*ct.add(Restrictions.ne("managerid",managerid));*/
+		/*ct.add(Restrictions.ne("designation","manager"));*/
 		List<UserBean> list=ct.list();
 		
 		if(list.isEmpty())
 		{
 			x=0;
 			
-			System.out.println("email alredy exist nahi hai by ajax"+x);
 		}
 		else if (!list.isEmpty())
 		{	
+			for(UserBean ub:list)
+			{
+				if(ub.getDesignation().equals("manager")&& ub.getManagerid()==managerid)
+						{
+							x=0;
+						}
+				else
+					x=1;
 			
-			x=1;
-			System.out.println("email alredy exist  hai by ajax" +x);
+			}
+			
 
 		}	
 			}
@@ -600,37 +608,44 @@ return x;
 
 
 
-
 //email alredy exixt hai k nahi by ajax--------------//
 
-public int checkmobileifexist(String mobile)
+public int checkmobileifexist(String mobile,int managerid)
 {
 		int x=0;
 try
 	{		
-		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
-		Session ss=sf.openSession();
-		Transaction tx1=ss.beginTransaction();
+	SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+	Session ss=sf.openSession();
+	Transaction tx1=ss.beginTransaction();
+
+	Criteria ct=ss.createCriteria(UserBean.class);		
+	ct.add(Restrictions.eq("mobile",mobile));
+	/*ct.add(Restrictions.ne("managerid",managerid));*/
+	/*ct.add(Restrictions.ne("designation","manager"));*/
+	List<UserBean> list=ct.list();
 	
-		Criteria ct=ss.createCriteria(UserBean.class);		
-		ct.add(Restrictions.eq("mobile",mobile));
-
-		List<UserBean> list=ct.list();
+	if(list.isEmpty())
+	{
+		x=0;
 		
-		if(list.isEmpty())
+	}
+	else if (!list.isEmpty())
+	{	
+		for(UserBean ub:list)
 		{
-			x=0;
-			
-			System.out.println("mobile alredy exist nahi hai by ajax"+x);
+			if(ub.getDesignation().equals("manager")&& ub.getManagerid()==managerid)
+					{
+						x=0;
+					}
+			else
+				x=1;
+		
 		}
-		else if (!list.isEmpty())
-		{	
-			
-			x=1;
-			System.out.println("mobile alredy exist  hai by ajax" +x);
+		
 
-		}	
-			}
+	}	
+		}
 			catch(Exception e)
 			{
 				e.printStackTrace();

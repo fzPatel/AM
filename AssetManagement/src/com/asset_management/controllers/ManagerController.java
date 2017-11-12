@@ -348,9 +348,10 @@ public void getoldpassword(HttpServletResponse response,@RequestParam String old
 	}
 
 
+
 //-----------------------------checkemailifexist Manager profile update Ajax code--------//--------------
 @RequestMapping("/checkemailifexist") 
-public void checkemailifexist(HttpServletResponse response,@RequestParam String emailid)
+public void checkemailifexist(HttpServletResponse response,@RequestParam String emailid,@RequestParam int managerid)
 {
 		
 //	int manager_id=(int) ss.getAttribute("user_session");
@@ -359,7 +360,7 @@ public void checkemailifexist(HttpServletResponse response,@RequestParam String 
 //			System.out.println("managerid inside Getoldpassword"+manager_id);
 
 			
-			int x=mm.checkemailifexist(emailid);
+			int x=mm.checkemailifexist(emailid,managerid);
 			
 			System.out.println("profile update krne pr email hai kya "+x);
 
@@ -384,7 +385,7 @@ e.printStackTrace();
 
 //-----------------------------checkemailifexist Manager profile update Ajax code--------//--------------
 @RequestMapping("/checkemobileifexist") 
-public void checkemobileifexist(HttpServletResponse response,@RequestParam String mobile)
+public void checkemobileifexist(HttpServletResponse response,@RequestParam String mobile,@RequestParam int managerid)
 {
 		
 //	int manager_id=(int) ss.getAttribute("user_session");
@@ -393,7 +394,7 @@ public void checkemobileifexist(HttpServletResponse response,@RequestParam Strin
 //			System.out.println("managerid inside Getoldpassword"+manager_id);
 
 			
-			int x=mm.checkmobileifexist(mobile);
+			int x=mm.checkmobileifexist(mobile,managerid);
 			
 			System.out.println("profile update krne pr email hai kya "+x);
 
@@ -410,6 +411,7 @@ public void checkemobileifexist(HttpServletResponse response,@RequestParam Strin
 		 	out.println(x);	
 
 	}
+
 
 
 

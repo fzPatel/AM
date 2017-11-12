@@ -25,7 +25,6 @@ $(document).ready(function()
 			$("#oldpassword").blur(function(){
 				
 			var data="oldpassword="+$("#oldpassword").val();
-					alert("oldpassword"+data);
 					$.ajax({
 						url:'CheckOldpwd',
 						data:data,
@@ -35,13 +34,15 @@ $(document).ready(function()
 							if(result.match(0))
 								{
 								
-								 $("#printmsg").html("Password does not match");
+								 $("#printmsg").html("<font color=Red>Password Does not match try Another</font>");
 								 $("#btnSubmit").prop('disabled', true);
 
 								}
 							else if(result.match(1))
 							{
-							
+								 $("#printmsg").html("<font color=Green>Password matched please continue</font>");
+
+								 $("#btnSubmit").prop('disabled', false);
 
 							}
 						}
@@ -131,6 +132,8 @@ return false;
 <tr><td>
 <center>
 <input type="reset">
+<button type="button" onClick="window.location.reload();">Refresh</button>
+
 <input id="btnSubmit" type="submit" value="submit" ></center>
 </td></tr>
 

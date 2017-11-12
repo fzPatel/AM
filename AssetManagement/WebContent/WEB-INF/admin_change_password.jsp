@@ -20,6 +20,16 @@
 		return false;  
 		}  
 		}  
+	/* 	
+		function Refresh()
+		{
+			
+			alert("password must be same!");  
+			return false;  
+			
+		}
+		 */
+		
 </script>
 		
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
@@ -31,7 +41,6 @@ $(document).ready(function()
 			$("#oldpassword").blur(function(){
 				
 			var data="oldpassword="+$("#oldpassword").val();
-					alert("oldpassword"+data);
 					$.ajax({
 						url:'AdminCheckOldpwd',
 						data:data,
@@ -40,14 +49,16 @@ $(document).ready(function()
 						{
 							if(result.match(0))
 								{
-								
+
 								 $("#printmsg").html("Password does not match");
 								 $("#btnSubmit").prop('disabled', true);
 
 								}
 							else if(result.match(1))
 							{
-							
+								 $("#printmsg").html("Password matched please continue");
+
+								 $("#btnSubmit").prop('disabled', false);
 
 							}
 						}
@@ -91,7 +102,7 @@ $(document).ready(function()
 		<form name="f1" action="./adminpasswordchanged" onsubmit="return matchpass()" method="post">
 		 <table>	
 			<tr id="oldpasswordId">
-				<td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter Old Password" required/>
+				<td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" onchange="Refresh()" placeholder="Enter Old Password" required/>
 					<div id="printmsg"></div>
 				</td>
 			</tr>
@@ -105,6 +116,8 @@ $(document).ready(function()
 			
 			
 			<tr><td></td><td><input type="submit" name="submit" id="btnSubmit" value="ok"/></td></tr>
+		  <button type="button" onClick="window.location.reload();">Refresh</button>
+		  
 		  </table>
 		  	
 		</form>		

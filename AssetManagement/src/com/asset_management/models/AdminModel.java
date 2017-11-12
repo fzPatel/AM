@@ -649,7 +649,4 @@ public int getMyOldPassword(String oldpassword,String emailid)
 	return x;
 	
 	
-}	
-
-
-}
+}	}
