@@ -12,7 +12,7 @@
 <style type="text/css">
 
 body{
-background-image:url('https://imgur.com/p7L8a5E.jpg');
+background-image:url('https://imgur.com/BPE2EiH.jpg');
 background-size:cover;
 height:100%;
 }
@@ -35,6 +35,8 @@ height:100%;
 <li><a href="./Myasset"> My assets</a></li>
 <li><a href="./Assettranfer"> Asset Transfer</a></li>
 <li><a href="./change_password"> Change your password</a></li>
+
+
   <li><a href="./logout">Logout</a></li>
       </ul>  
     </div>
@@ -44,10 +46,10 @@ height:100%;
 <font color="blue"><h1>${oh}</h1>
 <center>
 
-<h3 align="center"><font color="darkblue"> <h2>Welcome Employee${adminsession}<h2>   
-<h3 align="center"><font color="darkblue"> Your ID: ${user_session}</font></h3>
-<h3 align="center"><font color="darkblue">Manager-id:<%=session.getAttribute("My_Request_To_Id")%></font></h3>
-	<h3 align="center"><font color="blue"><%=session.getAttribute("Emailid")%> </font></h3>
+<h3 align="center"><font color="red"> <h2>Welcome Employee${adminsession}<h2>   
+<h3 align="center"><font color="red"> Your ID: ${user_session}</font></h3>
+<h3 align="center"><font color="red">Manager-id:<%=session.getAttribute("My_Request_To_Id")%></font></h3>
+	<h3 align="center"><font color="red"><%=session.getAttribute("Emailid")%> </font></h3>
 
 </center>
 </font></h2>

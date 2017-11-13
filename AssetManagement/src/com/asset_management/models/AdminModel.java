@@ -13,17 +13,22 @@ import javax.persistence.Id;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
+import javax.mail.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Restrictions;
 import com.asset_management.beans.AdminBean;
 import com.asset_management.beans.UserBean;
+import com.asset_management.mail.Email;
 
 
 
 public class AdminModel {
+	
+	
+	
+	
 	public int adminLoginCheck(AdminBean ab)
 	{
 		int x=0;
@@ -88,9 +93,7 @@ public class AdminModel {
 		
 		try
 		{
-			
-						
-
+		
 			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
 			org.hibernate.Session ss=sf.openSession();
 			Transaction tx1=ss.beginTransaction();
@@ -114,7 +117,8 @@ public class AdminModel {
 				ub1.setStatus("A");
 				ub1.setUserid(employeeid);
 				System.out.println("employeeid ="+employeeid);
-				System.out.println("managerid="+managerid);
+				
+	
 			}
 			
 				
@@ -211,10 +215,74 @@ public class AdminModel {
 ////				sendMail(ab.getEmailid(),ab.getPassword(),ab.getNewmanagerid(),ab.getDesignation());
 	
 		
+	
+			
+		
 		o=ss.save(ub1);
 		
 		tx1.commit();
 		ss.close();
+		
+		Email e=new Email();
+		
+		if(designation.equals("employee"))
+		{
+				int userid=	ub1.getEmployeeid();
+				String 	Password=ub1.getPassword();
+					String email=	ub1.getEmailid();
+						designation="employee";
+								
+						
+						System.out.println("inside Emplyee for mail"+userid);
+						System.out.println("inside Emplyee for mail"+password);
+						System.out.println("inside Emplyee for mail"+email);
+						System.out.println("inside Emplyee for mail"+designation);
+
+
+						
+			e.sendMail(userid,Password,designation,email);
+			
+		}
+		else if(designation.equals("manager"))
+		{
+			
+			
+			int userid=	ub1.getManagerid();
+			String 	Password=ub1.getPassword();
+				String email=	ub1.getEmailid();
+					designation="manager";
+
+					System.out.println("inside Emplyee for mail"+userid);
+					System.out.println("inside Emplyee for mail"+password);
+					System.out.println("inside Emplyee for mail"+email);
+					System.out.println("inside Emplyee for mail"+designation);
+
+		
+			e.sendMail(userid,Password,designation,email);
+		}
+		
+		
+		else if(designation.equals("support"))
+		{
+			
+			int userid=	ub1.getSupportid();
+			String 	Password=ub1.getPassword();
+				String email=	ub1.getEmailid();
+					designation="manager";
+									
+		
+					
+					System.out.println("inside support");
+
+					System.out.println("inside support" +userid);
+					System.out.println("inside support"+Password);
+					System.out.println("inside support"+designation);
+					
+			e.sendMail(userid,Password,designation,email);
+			
+		}
+		
+		
 		}
 		catch(Exception e)
 		{e.printStackTrace();}
@@ -546,70 +614,10 @@ public class AdminModel {
 	
 
 
-public void sendMail(int userid,String pwd, String designation,String email)
-{
-	String to = email;
-      String sub="Asset Management Account Creation";
-      
-      
-      System.out.println("Insode Mailmethod "+"Userid"+userid+"pwd="+pwd+"emailid"+email );
-      
-//      String msg="Welcome at out site and your user id="+userid1+", password="+password1+", designation="+designation1;
-      // Sender's email ID needs to be mentioned
-      String msg="Welcome To Asset Management your user id="+userid+", password="+pwd+", Email="+email+" Designation is-"+designation;
-      String from = "wkhan0419@gmail.com";
-      final String username = "wkhan0419@gmail.com";//change accordingly
-      final String password ="10kamilk";//change accordingly
-     // final String designation=designation1;
-
-      // Assuming you are sending email through relay.jangosmtp.net
-      String host = "smtp.gmail.com";
-
-      Properties props = new Properties();
-      props.put("mail.smtp.auth", "true");
-      props.put("mail.smtp.starttls.enable", "true");
-      props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-      props.put("mail.smtp.host", host);
-      props.put("mail.smtp.port", "587");
-
-      // Get the Session object.
-      javax.mail.Session session =  javax.mail.Session.getInstance(props,
-      new javax.mail.Authenticator() {
-         protected PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(username, password);
-         }
-      });
-
-      try {
-         // Create a default MimeMessage object.
-         Message message = new MimeMessage(session);
-
-         // Set From: header field of the header.
-         message.setFrom(new InternetAddress(from));
-
-         // Set To: header field of the header.
-         message.setRecipients(Message.RecipientType.TO,
-         InternetAddress.parse(to));
-
-         // Set Subject: header field
-         message.setSubject(sub);
-
-         // Now set the actual message
-         message.setText(msg);
-
-         // Send message
-         
-         Transport.send(message);
-        System.out.println("Sent message successfully....");
-         } catch (MessagingException e) {
-    	  e.printStackTrace();
-    	     }
-
-}
-
-
-
-
+	
+	
+	
+	
 
 public int getMyOldPassword(String oldpassword,String emailid)
 {	
@@ -618,8 +626,8 @@ public int getMyOldPassword(String oldpassword,String emailid)
 		{
 			System.out.println("Model mai Password checking chala.......");
 			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
-			Session ss=sf.openSession();
-			Transaction tx1=ss.beginTransaction();				
+			org.hibernate.Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();			
 			
 			Criteria ct=ss.createCriteria(AdminBean.class);
 			ct.add(Restrictions.eq("password",oldpassword));
@@ -649,4 +657,7 @@ public int getMyOldPassword(String oldpassword,String emailid)
 	return x;
 	
 	
-}	}
+}
+	
+	
+}

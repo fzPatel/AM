@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.asset_management.beans.AdminBean;
 import com.asset_management.beans.UserBean;
+import com.asset_management.mail.Email;
 import com.asset_management.models.AdminModel;
-import com.asset_management.models.ManagerModel;
 
 
 
@@ -99,8 +99,9 @@ ModelAndView mv=null;
 			System.out.println("Testing admmin Controller ------> insertuser()----->managerid="+ub.getManagerid());
 			
 			Object o=new AdminModel().insertUser(ub);
+
 			
-			if(o!=null)
+			 if(o!=null)
 			{	
 				mv=new ModelAndView("create_user");
 				mv.addObject("user_inserted","user inserted");
@@ -111,8 +112,13 @@ ModelAndView mv=null;
 				String email=ub.getEmailid();
 
 				
-				AdminModel ad=new AdminModel();
-				ad.sendMail(userid,Password,designation,email);
+				System.out.println("inside admin controller");
+								
+				System.out.println(Password);
+				System.out.println(designation);
+				System.out.println(email);
+			
+
 				
 			}
 			else if(o==null)
@@ -229,7 +235,10 @@ ModelAndView mv=null;
 	}
 	
 	
-
+	
+	
+	
+	
 	
 	
 	
@@ -299,7 +308,6 @@ ModelAndView mv=null;
 
 
 
-
 	//-------------------------------------//--------------
 	@RequestMapping("/AdminCheckOldpwd") 
 	public void getoldpassword(HttpServletResponse response,@RequestParam String oldpassword,HttpSession ss)
@@ -329,8 +337,4 @@ ModelAndView mv=null;
 			 	System.out.println(x);
 
 		}
-
-
-	
-	
 }

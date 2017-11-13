@@ -29,17 +29,11 @@ height:100%;
 
 $(document).ready(function()
 		{
-	$("#printmsg").hide();
-	$("#printmobile").hide();
+	
 			$("#emailid").blur(function(){
 				
-			var emailid="emailid="+$("#emailid").val()+"&managerid="+$("#managerid").val();
-			var user_session="user_session="+$("#user_session").val();
-			var managerid="managerid="+$("#managerid").val();		
-					
-					
-			
-				
+			var emailid="emailid="+$("#emailid").val();
+					alert("emailid"+emailid);
 					
 					$.ajax({
 						url:'checkemailifexist',
@@ -50,13 +44,9 @@ $(document).ready(function()
 							if(result.match(1))
 								{
 								
-								$("#printmsg").show();
+								$("#printmsg").html("Email id Already exist");
 								 $("#btnSubmit").prop('disabled', true);
 
-								}
-							else
-								{
-								$("#printmsg").hide();
 								}
 						}
 						
@@ -66,8 +56,8 @@ $(document).ready(function()
 		//Ajax for mobile if exist check-------//	
 			$("#mobile").blur(function(){
 				
-				var mobile="mobile="+$("#mobile").val()+"&managerid="+$("#managerid").val();
-						
+				var mobile="mobile="+$("#mobile").val();
+						alert("mobile"+mobile);
 						
 						$.ajax({
 							url:'checkemobileifexist',
@@ -76,16 +66,12 @@ $(document).ready(function()
 							success:function(result)
 							{
 								if(result.match(1))
-								{
-								
-								$("#printmobile").show();
-								 $("#btnSubmit").prop('disabled', true);
+									{
+									
+									$("#printmobile").html("mobile number Already registered");
+									 $("#btnSubmit").prop('disabled', true);
 
-								}
-							else
-								{
-								$("#printmobile").hide();
-								}
+									}
 							}
 							
 						})
@@ -138,29 +124,21 @@ int supportid=ub1.getSupportid();
 			<font color="orange"><h1>Update Profile</h1></font>
 			<form action="./managerprofileUpdate" method="Post">
 			
-				<table>
+				<table border="1">
 							
 					
 					<tr><td><font color="orange"> First Name</font></td><td><input type="text" name="firstname" pattern="[A-Za-z- ]+" title="only alphabet" value="<%=eb.getFirstname()%>"required/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Last Name</font></td><td><input type="text" name="lastname" pattern="[A-Za-z- ]+" title="only alphabet" value="<%=eb.getLastname()%>"required/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Email Id</font></td><td><input id=emailid type="email" name="emailid" title="Example - abc@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<%=eb.getEmailid()%>" required />&nbsp;</td></tr>
-					<tr id="printmsg"><td><input type="text" placeholder="Email id already exists!!!!" readonly/></td></tr>
-					<tr><td><font color="orange"> Manager Id</font></td><td><input type="text" name="managerid" id="managerid" value="<%=eb.getManagerid()%>" readonly/>&nbsp;</td></tr>
+					<tr><td id="printmsg"></td></tr>
+					<tr><td><font color="orange"> Manager Id</font></td><td><input type="text" name="managerid" value="<%=eb.getManagerid()%>" readonly/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Designation</font></td><td><input type="text" name="designation" value="<%=eb.getDesignation()%>"readonly/>&nbsp;</td></tr>
 					<tr><td><font color="orange">Mobile </font></td><td><input type="Number" id="mobile" name="mobile" maxlength="10" title="Enter Mobile Number" pattern="[0-9]{10}" value="<%=eb.getMobile()%>"required/>&nbsp;</td></tr>
-					<tr id="printmobile"><td><input type="text" placeholder="Mobile number already exists!!!!" readonly/></td></tr>
+					<tr><td id="printmobile"></td></tr>
 					<tr><td><font color="orange">Date Of Joining</font></td><td><input type="date" name="dateofjoining" value="<%=eb.getDateofjoining()%>"readonly/>&nbsp;</td></tr>
 					<tr><td><font color="orange"> Status</font></td><td><input type="text" name="status" value="<%=eb.getStatus()%>" readonly/>&nbsp;</td></tr>
 					<tr><td><input type="hidden" name="hidden" value="<%=eb.getEmailid()%>"/>&nbsp;</td></tr>
-					<tr><td><input type="hidden" name="user_session" id="user_session" value="${user_session}"/>&nbsp;</td></tr>
-					
-					
-					
-					<tr>
-						<td><input type="submit" id="btnSubmit" name="submit" value="update now" /></td>
-						<td><button type="button" onClick="window.location.reload();">Refresh</button></td>
-					</tr>
-				
+					<tr><td><input type="submit" id="btnSubmit" name="submit" value="update now" /></td></tr>
 				</table>
 				</form>
 				</center>				

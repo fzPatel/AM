@@ -1,13 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Transfer Request </title>
+</head>
+<body>
+
+
+
 <html>
 
-
-<title>Pending Request</title>
+<title>Asset Transfer Request</title>
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <style type="text/css">
 
@@ -20,24 +26,14 @@ height:100%;
 
 </head>
 
-
 <body>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-   <a href="./BackbtnMangerhome"><img src="https://imgur.com/tzbW2jt.png"   width="110px" height="70px" alt="logo" /></a>
-        </div>
-    <div>
-      <ul class="nav navbar-nav">
-	<li><a href="./BackbtnMangerhome" >Home</a></li>
-	   <li><a href="./logout">logout</a></li>
-      </ul>  
-    </div>
-  </div>
-</nav>
 
 
-<h1>Pending Asset Requested </h1>
+<h4 align="right"><a href="./BackbtnMangerhome" >Home</a>  &nbsp;| &nbsp;<a href="./logout">logout</a></h4> 
+	
+	
+
+
 
 
 <%UserBean ub1=(UserBean)session.getAttribute("My_Request_To_Id&MyEmail"); 
@@ -51,6 +47,7 @@ int supportid=ub1.getSupportid();
 	<h4 align="left"><font color="blue"> Your Support ID:<%=supportid %></font></h4> 
 
 
+<h1>Pending Asset Transfer Request </h1>
 </br>
 </br>
 
@@ -104,11 +101,13 @@ if(o instanceof RequestBean)
 											<td><h5><font color="Red">Rejected by Support</font></h5></td>
 										<%}
 %>
+
 <td><%=ub.getEmailid()%></td>
 
 <td colspan="2">
 				<form action="./aprooveEmprequest">
 				<input type="hidden" name="employeeid" value="<%=ub.getEmployeeid()%>"/>
+		
 				<input type="hidden" name="requestid" value="<%=ub.getRequestid()%>"/>
 				<input type="submit" name="submit" value="approve"/>												
 					</form>
@@ -141,3 +140,9 @@ if(o instanceof RequestBean)
 
 </center>
 </body></html>
+
+
+
+
+</body>
+</html>

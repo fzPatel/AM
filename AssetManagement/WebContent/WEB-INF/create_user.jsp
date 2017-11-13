@@ -161,7 +161,16 @@ height:100%;
 			
 			
 			
-		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			
 			
@@ -219,12 +228,36 @@ height:100%;
 									}
 								}
 								);
-					});		
+					});
+			
+			
+			
+			
+			
+			
+			
+			
+	
 	});
 			
 			
 			
-						
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 	</script>
 	
 	
@@ -285,16 +318,16 @@ height:100%;
 			</tr> 
 		<tr id="feedmanagerid">
 			<td>New Employee Id:</td>
-			<td><input type="text"  id="id1" value="0"  name="newemployeeid" placeholder="select employee id" required/></td>
+			<td><input type="text"  id="id1" value="0"  maxlength="3" name="newemployeeid" placeholder="select employee id" required/></td>
 		</tr>
 			
 		<tr id="feedsupportid">
 			<td>New Manager Id:</td>
-			<td><input type="text"  id="id2" value="0" name="newmanagerid" placeholder="select manager id" required /></td>
+			<td><input type="text"  id="id2" value="0"  maxlength="3" name="newmanagerid" placeholder="select manager id" required /></td>
 		</tr>	
 		<tr id="its">
 			<td>New Support Id:</td>
-			<td><input type="text"  id="id3" value="0" name="newsupportid" placeholder="select support id" required/></td>
+			<td><input type="text"  id="id3" value="0"  maxlength="3" name="newsupportid" placeholder="select support id" required/></td>
 		</tr>
 			
 			

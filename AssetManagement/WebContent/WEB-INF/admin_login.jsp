@@ -8,38 +8,6 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<script>
-function Submit(){
-	var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
-
-	var	femail = document.form.emailid.value,
-		fpassword = document.form.password.value;
-		
-   if (femail == "" )
-	{
-		document.form.emailid.focus();
-		document.getElementById("errorBox").innerHTML = "enter the email";
-		return false;
-	 }else if(!emailRegex.test(femail)){
-		document.form.emailid.focus();
-		document.getElementById("errorBox").innerHTML = "enter the valid email";
-		return false;
-	 }
-
-	if(fpassword == "")
-	 {
-		 document.form.password.focus();
-		 document.getElementById("errorBox").innerHTML = "enter the password";
-		 return false;
-	 }
-	 
-		  
-}
-
-
-
-</script>
-
 
 <style type="text/css">
 
@@ -49,37 +17,47 @@ background-size:cover;
 height:100%;
 }
 </style>
-		<font color="Red"><h3>${errormag}</font></h3>
 
 </head>
 
 <body>
+
 <a href="./backtoindex">back</a>
+	<center>
+		
+	<%-- 	<%
+		if(admin_session!=null)
+		{
+			%><%
+		}
+		% --%>
+		
+		<font color="Red"><h3>${errormag}</font></h3>
+			
+		<form action="./adminlogincheck" method="post" id="the-form">
+					<font color="orange"><h1>Admin Login</h1></font>
+				<table>
+					<tr>
+						<td>E-mail</td>
+						<td><input type="text" name="emailid" id="emailid" data-validation="email" data-validation-help="as-abc@gmail.com..." required/></td>
+					
+					<tr>
+						<td>Password</td>
+						<td><input type="password" name="password" id="password" required/></td>
+					</tr>
+					<tr>
+						<td><input type="submit" name="submit" value="login"/></td>
+						<td><input type="reset" name="reset" value="reset"/></td>
+					</tr>
+				</table>
+			</form>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+<script>
+  $.validate();
+  $('#my-textarea').restrictLength( $('#max-length-element') );
+</script>
+	</center>
 
-<center>
-
-       <div id="errorBox"></div>
-
-<font color="orange"><h1>Admin Login</h1></font>
-
-       <form name="form" action="./adminlogincheck" method="post" >
-     
-      <div id="email_form">
-        <input type="text" name="emailid" value="" onClick="Tab()"  placeholder="Your Email" class="input_email">
-      </div>
-      
-      <div id="password_form">
-        <input type="password" name="password" value=""  placeholder="New password" class="input_password">
-      </div>
-   
-       <div>
-       
-       	<td><input type="submit" onClick="Submit()" name="submit" value="submit"/></td>
-       
-        <p id="sign_user" onClick="Submit()">Submit </p>
-      </div>
-     </form>
-     </center>
-    
 </body>
 </html>

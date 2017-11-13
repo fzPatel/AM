@@ -3,7 +3,7 @@
 <style type="text/css">
 
 body{
-background-image:url('https://imgur.com/p7L8a5E.jpg');
+background-image:url('https://imgur.com/BPE2EiH.jpg');
 background-size:cover;
 height:100%;
 }
@@ -74,12 +74,12 @@ for(UserBean ab:ar)
 
 
 <% 
-}
+}  
 %>
 	
 </table>
 
 </center>
 <font color="brown">
-
+<h3>${updated}</h3>
 </font>

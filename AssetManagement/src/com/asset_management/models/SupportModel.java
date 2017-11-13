@@ -277,4 +277,195 @@ public class SupportModel {
 			
 		return password;
 	}
+	
+	
+	
+	
+	
+	public ArrayList<UserBean> retriveSupportDetails(int supportid)
+	{
+		UserBean ub=null;
+		ArrayList<UserBean> al=new ArrayList<UserBean>();
+		try
+		{
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();
+		
+			Criteria ct=ss.createCriteria(UserBean.class);	
+			ct.add(Restrictions.eq("supportid",supportid));
+			ct.add(Restrictions.eq("designation","support"));
+			List<UserBean> list=ct.list();
+			if(list.isEmpty())
+			{}
+			else
+			{
+				
+				for(UserBean ub1:list)
+				{
+					ub=new UserBean();
+
+					ub.setFirstname(ub1.getFirstname());
+					ub.setLastname(ub1.getLastname());
+					ub.setMobile(ub1.getMobile());
+					ub.setEmailid(ub1.getEmailid());
+					ub.setPassword(ub1.getPassword());
+					ub.setDesignation(ub1.getDesignation());
+					ub.setDateofjoining(ub1.getDateofjoining());
+					al.add(ub1);
+					
+				}
+				
+			}
+			tx1.commit();
+			ss.close();
+			
+		}
+		catch(Exception e)
+		{e.printStackTrace();}
+		return al;
+
+	}
+	
+	
+	
+	//email alredy exixt hai k nahi by ajax--------------//
+
+	public int checkemailifexist(String emailid, int supportid)
+	{
+			int x=0;
+	try
+		{		
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();
+		
+			Criteria ct=ss.createCriteria(UserBean.class);		
+			ct.add(Restrictions.eq("emailid",emailid));
+			/*ct.add(Restrictions.ne("managerid",managerid));*/
+			/*ct.add(Restrictions.ne("designation","manager"));*/
+			List<UserBean> list=ct.list();
+			
+			if(list.isEmpty())
+			{
+				x=0;
+				
+			}
+			else if (!list.isEmpty())
+			{	
+				for(UserBean ub:list)
+				{
+					if(ub.getDesignation().equals("support")&& ub.getSupportid()==supportid)
+							{
+								x=0;
+							}
+					else
+						x=1;
+				
+				}
+				
+
+			}	
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					System.out.println(e);
+				}
+
+
+	return x;
+		
+	}
+
+
+
+
+	//email alredy exixt hai k nahi by ajax--------------//
+
+	public int checkmobileifexist(String mobile,int supportid)
+	{
+			int x=0;
+	try
+		{		
+		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+		Session ss=sf.openSession();
+		Transaction tx1=ss.beginTransaction();
+
+		Criteria ct=ss.createCriteria(UserBean.class);		
+		ct.add(Restrictions.eq("mobile",mobile));
+		/*ct.add(Restrictions.ne("managerid",managerid));*/
+		/*ct.add(Restrictions.ne("designation","manager"));*/
+		List<UserBean> list=ct.list();
+		
+		if(list.isEmpty())
+		{
+			x=0;
+			
+		}
+		else if (!list.isEmpty())
+		{	
+			for(UserBean ub:list)
+			{
+				if(ub.getDesignation().equals("support")&& ub.getSupportid()==supportid)
+						{
+							x=0;
+						}
+				else
+					x=1;
+			
+			}
+			
+
+		}	
+			}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					System.out.println(e);
+				}
+
+
+	return x;
+		
+	}
+
+	
+	
+	
+	
+	
+//------updating support profile-------
+	public int updateSupportProfile(int supportid,String firstname,String lastname,String emailid,String mobile,String password)
+	{
+		int x=0;
+		try
+		{
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			
+			Transaction tx1=ss.beginTransaction();
+			Query query=ss.createQuery("update UserBean set firstname=:a,lastname=:b,emailid=:c,password=:d,mobile=:e where supportid=:f and designation=:g");
+			query.setString("a",firstname);
+			query.setString("b",lastname);
+			query.setString("c",emailid);
+			query.setString("d",password);
+			query.setString("e",mobile);
+			query.setInteger("f",supportid);
+			query.setString("g","support");
+			
+			x=query.executeUpdate();
+			tx1.commit();
+			ss.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println(e);
+		}
+
+		return x;
+	}
+	
+	
 }

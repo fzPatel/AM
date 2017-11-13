@@ -4,9 +4,6 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.bind.JAXBException;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,22 +13,14 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.xml.sax.SAXException;
-
 import com.asset_management.beans.AdminBean;
 import com.asset_management.beans.AllocatedAssetsBean;
+import com.asset_management.beans.AssetTransferBean;
 import com.asset_management.beans.RequestBean;
 import com.asset_management.beans.UserBean;
-
-
-
-
 public class EmployeeModel 
 {
-
-	
-
-public int createrequest(RequestBean ub)
+	public int createrequest(RequestBean ub)
 {
 	int x=0;
 	
@@ -51,31 +40,60 @@ public int createrequest(RequestBean ub)
 	  return x;
 }
 //PreparedStatement ps=con.prepareStatement("select * from ordertable where status=?");
-public List<RequestBean> myasset(int employeeid)
+public List<AllocatedAssetsBean> myasset(int employeeid,String emailid)
 {
-	
 	int x=0;	
 	//ArrayList <UserBean> list= new ArrayList<UserBean>();
 
 		SessionFactory sf= new AnnotationConfiguration().configure().buildSessionFactory();
 		Session ss=sf.openSession();
-		Criteria ct = ss.createCriteria(RequestBean.class);
-		ct.add(Restrictions.eq("employeeid",employeeid));
-		ct.add(Restrictions.eq("designation","employee"));
+
+		 System.out.println(employeeid);
+	        System.out.println(emailid);
+
+		Criteria ct = ss.createCriteria(AllocatedAssetsBean.class);
 		
-		ct.add(Restrictions.eq("status",4));
-	    List<RequestBean>list=ct.list();
+		ct.add(Restrictions.eq("userid",employeeid));
+		ct.add(Restrictions.eq("emailid",emailid));
+		
+	    List<AllocatedAssetsBean>list=ct.list();
 	    if(!list.isEmpty())
 	   {
 		   System.out.println("not Empty");
 	   }
 	     
-		ss.close();
+	    
+	   ss.close();
 		return list;
 	
 		
 	}
+public List<UserBean> myassetofemp()
+{
+	int x=0;	
+	//ArrayList <UserBean> list= new ArrayList<UserBean>();
 
+		SessionFactory sf= new AnnotationConfiguration().configure().buildSessionFactory();
+		Session ss=sf.openSession();
+
+		 
+
+		Criteria ct = ss.createCriteria(UserBean.class);
+		
+		ct.add(Restrictions.eq("designation","employee"));
+		
+	    List<UserBean>list=ct.list();
+	    if(!list.isEmpty())
+	   {
+		   System.out.println("not Empty");
+	   }
+	     
+	    
+	   ss.close();
+		return list;
+	
+		
+	}
 
 
 
@@ -264,8 +282,54 @@ public List<AllocatedAssetsBean> Fetchassetdata(int userid)
 	
 		SessionFactory sf= new AnnotationConfiguration().configure().buildSessionFactory();		
 		Session ss=sf.openSession();
+		/*Transaction tx1=ss.beginTransaction();
+		String hql = "FROM AllocatedAssetsBean where userid=:a ";
+		
+		Query query = ss.createQuery(hql);
+		query.setInteger("a", userid);
+		
+		List list = query.list();
+		Iterator it =list.iterator();*/
+		
 		Transaction tx1=ss.beginTransaction();
-		String hql = "select assetname FROM AllocatedAssetsBean where userid=:a ";
+		
+		Criteria ct=ss.createCriteria(AllocatedAssetsBean.class);		
+		
+		ct.add(Restrictions.eq("userid",userid));
+		List<AllocatedAssetsBean> list=ct.list();
+		
+		
+		/*while(it.hasNext()){
+			AllocatedAssetsBean ab= new AllocatedAssetsBean();
+			ab.setAssetname((String)(it.next()));
+			list2.add(ab);
+		}
+		*/
+		/*Criteria ct = ss.createCriteria(AllocatedAssetsBean.class);
+		ct.add(Restrictions.eq("userid", userid ));
+		System.out.println("employeemodel--->fetchassetdta--->uid"+userid);
+	   ct.add(Restrictions.eq("assetname",  "assetname" ));*/
+		/*List<AllocatedAssetsBean>list=(List<AllocatedAssetsBean>)query.list();*/
+	  
+		tx1.commit();
+		ss.close();
+		return list;
+	
+		
+	}
+
+
+public List<AllocatedAssetsBean> FetchassetdataToTransfer(int userid)
+{
+	
+	int x=0;	
+	 
+	ArrayList <AllocatedAssetsBean> list2= new ArrayList<>();
+	
+		SessionFactory sf= new AnnotationConfiguration().configure().buildSessionFactory();		
+		Session ss=sf.openSession();
+		Transaction tx1=ss.beginTransaction();
+		String hql = "select assetid FROM AllocatedAssetsBean where userid=:a ";
 		
 		Query query = ss.createQuery(hql);
 		query.setInteger("a", userid);
@@ -276,13 +340,14 @@ public List<AllocatedAssetsBean> Fetchassetdata(int userid)
 			ab.setAssetname((String)(it.next()));
 			list2.add(ab);
 		}
+		
 		/*Criteria ct = ss.createCriteria(AllocatedAssetsBean.class);
 		ct.add(Restrictions.eq("userid", userid ));
 		System.out.println("employeemodel--->fetchassetdta--->uid"+userid);
 	   ct.add(Restrictions.eq("assetname",  "assetname" ));*/
-		
-	     /*List<AllocatedAssetsBean>list=(List<AllocatedAssetsBean>)query.list();*/
-	   tx1.commit();
+		/*List<AllocatedAssetsBean>list=(List<AllocatedAssetsBean>)query.list();*/
+	  
+		tx1.commit();
 		ss.close();
 		return list2;
 	
@@ -357,6 +422,128 @@ public int empchangepwd(int employee_id,String password)
 		return x;
 				
 	}
+
+public int mobilecheckajax(int employee_id, String mobile)
+{	
+int x=0;
+		try
+		{
+			
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();				
+			
+			Criteria ct=ss.createCriteria(UserBean.class);		
+			ct.add(Restrictions.eq("mobile",mobile));
+			
+			List<UserBean> list=ct.list();
+			
+			if(list.isEmpty())
+			{
+				x=0;
+				
+			}
+			else if (!list.isEmpty())
+			{	
+				for(UserBean ub:list)
+				{
+					if(ub.getDesignation().equals("employee")&& ub.getEmployeeid()== employee_id)
+							{
+								x=0;
+							}
+					
+					else
+						x=1;
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>"+mobile);
+				}
+				
+
+			}	
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					System.out.println(e);
+				}
+
+
+	return x;
+}
+
+
+public int emailcheckajax(int employee_id, String email)
+{	
+int x=0;
+		try
+		{
+			
+			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+			Session ss=sf.openSession();
+			Transaction tx1=ss.beginTransaction();				
+			
+			Criteria ct=ss.createCriteria(UserBean.class);		
+			ct.add(Restrictions.eq("emailid",email));
+			
+			List<UserBean> list=ct.list();
+			
+			System.out.println("model me email a raha hai"+email);
+			System.out.println(">>>>>>>>>>>"+list);
+			if(list.isEmpty())
+			{
+				x=0;
+				
+			}
+			else if (!list.isEmpty())
+			{	
+				for(UserBean ub:list)
+				{
+					if(ub.getDesignation().equals("employee")&& ub.getEmployeeid()== employee_id)
+							{
+								x=0;
+							}
+					
+					else
+						x=1;
+					System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@"+email);
+				}
+				
+
+			}	
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					System.out.println(e);
+				}
+
+
+	return x;
+		
+	}
+
+
+
+
+public int trasferassetrequest(AssetTransferBean ub)
+{
+	int x=0;
+	
+		
+		SessionFactory sf= new AnnotationConfiguration().configure().buildSessionFactory();
+		
+		Session ss=sf.openSession();
+		
+		 Transaction tt = ss.beginTransaction();
+		 
+		 System.out.println(ub.toString());
+		ss.save(ub);
+		
+			x=1;
+	  tt.commit();
+	  ss.close();
+	
+	  return x;
+}
 
 
 }

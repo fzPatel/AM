@@ -81,15 +81,15 @@ height:100%;
 					<%if(eb.getDesignation().equals("support"))
 					{
 						%>
-						<tr><td><font color="orange"> Support Id</font></td><td><input type="text" name="supportid" value="<%=eb.getSupportid()%>" required/>&nbsp;</td></tr>
+						<tr><td><font color="orange"> Support Id</font></td><td><input type="text"  maxlength="3" name="supportid" value="<%=eb.getSupportid()%>" required/>&nbsp;</td></tr>
 						<%
 					}
 					else if(eb.getDesignation().equals("manager"))
 					{
 						%>
 							
-							<tr><td><font color="orange"> Manager Id</font></td><td><input type="text" name="managerid" value="<%=eb.getManagerid()%>" required/>&nbsp;</td></tr>
-							<tr><td><font color="orange"> Support Id</font></td><td><input type="text" name="supportid" value="<%=eb.getSupportid()%>" required/>&nbsp;</td></tr>
+							<tr><td><font color="orange"> Manager Id</font></td><td><input type="text"  maxlength="3" name="managerid" value="<%=eb.getManagerid()%>" required/>&nbsp;</td></tr>
+							<tr><td><font color="orange"> Support Id</font></td><td><input type="text"  maxlength="3" name="supportid" value="<%=eb.getSupportid()%>" required/>&nbsp;</td></tr>
 					
 						<%
 					}

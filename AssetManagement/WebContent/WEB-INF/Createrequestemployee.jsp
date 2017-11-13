@@ -8,12 +8,18 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <title>Insert title here</title>
+<style type="text/css">
+
+body{
+background-image:url('https://imgur.com/BPE2EiH.jpg');
+background-size:cover;
+height:100%;
+}
+</style>
 </head>
 
 <body>
-	<font color="orange">
-	<h2>${msg}</h2>
-	</font>
+	
 	<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -50,7 +56,9 @@ Email               <input type="text" value="<%=session.getAttribute("Emailid")
             
 <input type="submit"name="submit"/>
 </form>
-
+<font color="orange">
+	<h2>${msg}</h2>
+	</font>
 
 
 

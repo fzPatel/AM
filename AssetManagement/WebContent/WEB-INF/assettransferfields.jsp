@@ -9,7 +9,24 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <title>Insert title here</title>
+
+
+
+
+		<style type="text/css">
+
+body{
+background-image:url('https://imgur.com/BPE2EiH.jpg');
+background-size:cover;
+height:100%;
+}
+</style>
+		
 </head>
+
+
+
+
 <body>
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -34,21 +51,40 @@
 <%
 	List<AllocatedAssetsBean> ll=(List<AllocatedAssetsBean>)request.getAttribute("List");
 %>
-From Emp Id  <input type="text" value="<%=session.getAttribute("user_session")%>" name="employeeid">
-Manager Id  <input type="text" value="<%=session.getAttribute("My_Request_To_Id")%>" name="managerid">
-To Emp Id   <input type="text" name="toempid"/>
-Asset Name <select>
+<tr>
+<form method="post">
+
+From Emp Id <tr><td> <input type="text" value="<%=session.getAttribute("user_session")%>"  name="employeeid"></td></tr>
+Manager Id   <tr><td> <input type="text" value="<%=session.getAttribute("My_Request_To_Id")%>" name="managerid"></td></tr>
+To Emp Id   <tr><td> <input type="text" name="toempid"/></td></tr>
+Asset Name <tr><td><select name="assetname">
 		<%
 		for(AllocatedAssetsBean aab:ll)
 		{
 			String x=aab.getAssetname();
+			int y=aab.getAssetid();
 		%>
-			<option value="<%=x%>"><%=x%></option>
-
+	<option value="<%=x%>"><%=x%> Asset ID <%=y%> </option>
 		<%
 		}
 		%>
-</select>
+</select></td></tr>
+Asset ID<tr><td> <select name="assetid">
+		<%
+		for(AllocatedAssetsBean aab:ll)
+		{
+		
+			int x=aab.getAssetid();
+		%>
+	<option value="<%=x%>"><%=x%></option>
+		<%
+		}
+		%>
+</select></td></tr>
+<input type="submit"   value="TransferAssets" name="submit"/>
+
+
+</form>
 
 
 </body>

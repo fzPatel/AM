@@ -21,28 +21,29 @@
 <script type="text/javascript">
 
 $(document).ready(function()
-	{
+		{
+	
 			$("#oldpassword").blur(function(){
 				
 			var data="oldpassword="+$("#oldpassword").val();
+					
 					$.ajax({
-						url:'CheckOldpwd',
+						url:'Getoldpassword',
 						data:data,
 						type:'post',
 						success:function(result)
 						{
+														
 							if(result.match(0))
 								{
-								
-								 $("#printmsg").html("<font color=Red>Password Does not match try Another</font>");
+								 $("#printmsg").html("<font color='Red'>Password does not match</font>");
 								 $("#btnSubmit").prop('disabled', true);
 
 								}
 							else if(result.match(1))
 							{
-								 $("#printmsg").html("<font color=Green>Password matched please continue</font>");
-
-								 $("#btnSubmit").prop('disabled', false);
+								 $("#printmsg").hide();
+							 $("#btnSubmit").prop('disabled', false);
 
 							}
 						}
@@ -121,9 +122,9 @@ return false;
 
 <input size="5px" type="hidden"  value="<%=session.getAttribute("user_session")%>" readonly="readonly"/>
 <tr><td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" title="Please Enter Old Password" placeholder="Enter Old Password" required/>
+	<div id="printmsg"></div>
 </td>
 </tr>
-<tr><td id="printmsg"></td></tr>
  
 <tr id="newpassword">
 <td>New Password:<input type="password" name="password" id="newpassword" title="Please Enter New Password" placeholder="Enter New Password" required/></td></tr>  
@@ -132,8 +133,6 @@ return false;
 <tr><td>
 <center>
 <input type="reset">
-<button type="button" onClick="window.location.reload();">Refresh</button>
-
 <input id="btnSubmit" type="submit" value="submit" ></center>
 </td></tr>
 

@@ -470,7 +470,9 @@ public int getMyOldPassword(String oldpassword,int manager_id)
 		int x=0;
 		try
 		{
+				
 			System.out.println("Model mai Password checking chala.......");
+		System.out.println(manager_id);
 			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
 			Session ss=sf.openSession();
 			Transaction tx1=ss.beginTransaction();				
@@ -490,15 +492,12 @@ public int getMyOldPassword(String oldpassword,int manager_id)
 			{
 				x=1;
 			}
+			
 			tx1.commit();
 			ss.close();
 		}
 		catch(Exception e)
-		{
-			e.printStackTrace();
-			
-		System.out.println(e);
-		}
+		{e.printStackTrace();}
 		
 	return x;
 	
@@ -528,6 +527,9 @@ public ArrayList<AssetTransferBean> manager_viewAssetTransferReq(int manager_id)
 		}
 		else
 		{	
+			
+			System.out.println(" Data Found!!!!");
+
 			for(AssetTransferBean u:list)
 				{
 				AssetTransferBean rrb=new AssetTransferBean();
@@ -559,7 +561,7 @@ return al;
 
 //email alredy exixt hai k nahi by ajax--------------//
 
-public int checkemailifexist(String emailid, int managerid)
+public int checkemailifexist(String emailid)
 {
 		int x=0;
 try
@@ -570,28 +572,20 @@ try
 	
 		Criteria ct=ss.createCriteria(UserBean.class);		
 		ct.add(Restrictions.eq("emailid",emailid));
-		/*ct.add(Restrictions.ne("managerid",managerid));*/
-		/*ct.add(Restrictions.ne("designation","manager"));*/
+
 		List<UserBean> list=ct.list();
 		
 		if(list.isEmpty())
 		{
 			x=0;
 			
+			System.out.println("email alredy exist nahi hai by ajax"+x);
 		}
 		else if (!list.isEmpty())
 		{	
-			for(UserBean ub:list)
-			{
-				if(ub.getDesignation().equals("manager")&& ub.getManagerid()==managerid)
-						{
-							x=0;
-						}
-				else
-					x=1;
 			
-			}
-			
+			x=1;
+			System.out.println("email alredy exist  hai by ajax" +x);
 
 		}	
 			}
@@ -608,44 +602,37 @@ return x;
 
 
 
+
 //email alredy exixt hai k nahi by ajax--------------//
 
-public int checkmobileifexist(String mobile,int managerid)
+public int checkmobileifexist(String mobile)
 {
 		int x=0;
 try
 	{		
-	SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
-	Session ss=sf.openSession();
-	Transaction tx1=ss.beginTransaction();
-
-	Criteria ct=ss.createCriteria(UserBean.class);		
-	ct.add(Restrictions.eq("mobile",mobile));
-	/*ct.add(Restrictions.ne("managerid",managerid));*/
-	/*ct.add(Restrictions.ne("designation","manager"));*/
-	List<UserBean> list=ct.list();
+		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+		Session ss=sf.openSession();
+		Transaction tx1=ss.beginTransaction();
 	
-	if(list.isEmpty())
-	{
-		x=0;
-		
-	}
-	else if (!list.isEmpty())
-	{	
-		for(UserBean ub:list)
-		{
-			if(ub.getDesignation().equals("manager")&& ub.getManagerid()==managerid)
-					{
-						x=0;
-					}
-			else
-				x=1;
-		
-		}
-		
+		Criteria ct=ss.createCriteria(UserBean.class);		
+		ct.add(Restrictions.eq("mobile",mobile));
 
-	}	
+		List<UserBean> list=ct.list();
+		
+		if(list.isEmpty())
+		{
+			x=0;
+			
+			System.out.println("mobile alredy exist nahi hai by ajax"+x);
 		}
+		else if (!list.isEmpty())
+		{	
+			
+			x=1;
+			System.out.println("mobile alredy exist  hai by ajax" +x);
+
+		}	
+			}
 			catch(Exception e)
 			{
 				e.printStackTrace();
@@ -656,5 +643,74 @@ try
 return x;
 	
 }
+
+
+
+
+
+
+
+
+
+//------------------------Aproove by manager------------------
+
+public int approveAssetTransfer(int fromempid,String approve_date,int transferid)
+{
+	
+	int x=0;
+	try
+	{
+		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+		Session ss=sf.openSession();
+		Transaction tx1=ss.beginTransaction();
+		Query q=ss.createQuery("update AssetTransferBean set transferstatus=:a, transferdate=:b where fromempid=:c and transferid=:d");
+		q.setString("a","1");
+		q.setString("b",approve_date);
+		q.setInteger("c",fromempid);
+		
+		q.setInteger("d",transferid);
+		
+		x=q.executeUpdate();
+		tx1.commit();
+		ss.close();
+			
+	}
+	catch(Exception e)
+	{e.printStackTrace();}
+	return x;
+			
+}
+
+//------------------------Reject  by manager------------------
+public int rejectAssetTransfer(int fromempid,String reject_date,int transferid)
+{
+int x=0;
+	try
+	{
+		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+		Session ss=sf.openSession();
+		Transaction tx1=ss.beginTransaction();
+		Query q=ss.createQuery("update AssetTransferBean set transferstatus=:a, transferdate=:b where fromempid=:c and transferid=:d");
+		
+		q.setString("a","2");
+		q.setString("b",reject_date);
+		q.setInteger("c",fromempid);
+		q.setInteger("d",transferid);
+	
+		x=q.executeUpdate();
+		tx1.commit();
+		ss.close();
+			
+	}
+	catch(Exception e)
+	{e.printStackTrace();
+	
+	
+	}
+	return x;
+			
+}
+
+
 
 }

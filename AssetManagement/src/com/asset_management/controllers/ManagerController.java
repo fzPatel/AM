@@ -314,20 +314,19 @@ public ModelAndView deactive_employee(@RequestParam int employeeid,HttpSession s
 
 
 //-------------------------------------//--------------
-@RequestMapping("/CheckOldpwd") 
+@RequestMapping("/Getoldpassword") 
 public void getoldpassword(HttpServletResponse response,@RequestParam String oldpassword,HttpSession ss)
 {
 		
-	int manager_id=420;
 	
-	//int manager_id=(Integer)ss.getAttribute("user_session");
+	
+
+	int manager_id=(int)ss.getAttribute("user_session");
 
 			ManagerModel um=new ManagerModel();
 
 			System.out.println("oldpassword inside Getoldpassword"+oldpassword);
 			System.out.println("managerid inside Getoldpassword"+manager_id);
-			
-			
 			
 
 			int x=um.getMyOldPassword(oldpassword,manager_id);
@@ -339,19 +338,17 @@ public void getoldpassword(HttpServletResponse response,@RequestParam String old
 		try {
 			out = response.getWriter();
 		} catch (IOException e) {
-			System.out.println(e);
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		 	out.println(x);	
-		 	System.out.println(x);
 
 	}
-
 
 
 //-----------------------------checkemailifexist Manager profile update Ajax code--------//--------------
 @RequestMapping("/checkemailifexist") 
-public void checkemailifexist(HttpServletResponse response,@RequestParam String emailid,@RequestParam int managerid)
+public void checkemailifexist(HttpServletResponse response,@RequestParam String emailid)
 {
 		
 //	int manager_id=(int) ss.getAttribute("user_session");
@@ -360,41 +357,7 @@ public void checkemailifexist(HttpServletResponse response,@RequestParam String 
 //			System.out.println("managerid inside Getoldpassword"+manager_id);
 
 			
-			int x=mm.checkemailifexist(emailid,managerid);
-			
-			System.out.println("profile update krne pr email hai kya "+x);
-
-			
-			//mv=new ModelAndView("manager_profile_update");
-		
-		PrintWriter out = null;
-		try {
-			out = response.getWriter();
-		} catch (IOException e) {
-System.out.println(e);	
-e.printStackTrace();
-		}
-		 	out.println(x);	
-		 	System.out.println(x);
-
-	}
-
-
-
-
-
-//-----------------------------checkemailifexist Manager profile update Ajax code--------//--------------
-@RequestMapping("/checkemobileifexist") 
-public void checkemobileifexist(HttpServletResponse response,@RequestParam String mobile,@RequestParam int managerid)
-{
-		
-//	int manager_id=(int) ss.getAttribute("user_session");
-	
-			ManagerModel mm=new ManagerModel();
-//			System.out.println("managerid inside Getoldpassword"+manager_id);
-
-			
-			int x=mm.checkmobileifexist(mobile,managerid);
+			int x=mm.checkemailifexist(emailid);
 			
 			System.out.println("profile update krne pr email hai kya "+x);
 
@@ -416,6 +379,37 @@ public void checkemobileifexist(HttpServletResponse response,@RequestParam Strin
 
 
 
+//-----------------------------checkemailifexist Manager profile update Ajax code--------//--------------
+@RequestMapping("/checkemobileifexist") 
+public void checkemobileifexist(HttpServletResponse response,@RequestParam String mobile)
+{
+		
+//	int manager_id=(int) ss.getAttribute("user_session");
+	
+			ManagerModel mm=new ManagerModel();
+//			System.out.println("managerid inside Getoldpassword"+manager_id);
+
+			
+			int x=mm.checkmobileifexist(mobile);
+			
+			System.out.println("profile update krne pr email hai kya "+x);
+
+			
+			//mv=new ModelAndView("manager_profile_update");
+		
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 	out.println(x);	
+
+	}
+
+
+
 @RequestMapping("/assettransferRequest") 
 public ModelAndView assetTransferReq(HttpSession ss)
 {
@@ -430,10 +424,85 @@ public ModelAndView assetTransferReq(HttpSession ss)
 			
 			ArrayList<AssetTransferBean> rb=um.manager_viewAssetTransferReq(manager_id);
 		 mv=new ModelAndView("manager_asset_transfer_RequestByEmp");
-		 mv.addObject("Manager_request",rb);
+		 
+		 mv.addObject("Employee_request",rb);
 	
 	return mv;
 	}
+
+
+
+@RequestMapping("/aprooveAssetTransferEmprequest")
+public ModelAndView aprooveAssetEmprequest(@RequestParam int fromempid,@RequestParam int transferid,HttpSession ss)
+{
+
+	int manager_id=(int) ss.getAttribute("user_session");
+
+
+	int day, month, year;
+	GregorianCalendar date = new GregorianCalendar();
+	day = date.get(Calendar.DAY_OF_MONTH);
+	month = date.get(Calendar.MONTH);
+	year = date.get(Calendar.YEAR);
+	String approve_date= (year+"/"+(month+1)+"/"+day);
+	
+	
+	System.out.println("Into aprooveEmprequest");
+	
+	System.out.println("managerid"+manager_id);
+	System.out.println("emp id"+fromempid);
+	System.out.println("approve date"+approve_date);
+	
+	
+	
+	int y=new ManagerModel().approveAssetTransfer(fromempid,approve_date,transferid);
+	
+	
+	
+	ManagerModel um=new ManagerModel();
+
+
+	if(y==1)
+	{
+		ArrayList<AssetTransferBean> rb=um.manager_viewAssetTransferReq(manager_id);
+		 mv=new ModelAndView("manager_asset_transfer_RequestByEmp");
+		 
+		 mv.addObject("Employee_request",rb);
+	}
+	return mv;
+}
+
+@RequestMapping("/rejectAssetTransferEmprequest")
+public ModelAndView rejectAssetEmprequest(@RequestParam int fromempid,HttpSession ss,@RequestParam int transferid)
+{
+	
+	int day, month, year;
+	GregorianCalendar date = new GregorianCalendar();
+	day = date.get(Calendar.DAY_OF_MONTH);
+	month = date.get(Calendar.MONTH);
+	year = date.get(Calendar.YEAR);
+	String reject_date= (year+"/"+(month+1)+"/"+day);
+	
+	int manager_id=(int) ss.getAttribute("user_session");
+
+	
+	ManagerModel um=new ManagerModel();
+	
+	int y=new ManagerModel().rejectAssetTransfer(fromempid,reject_date,transferid);
+	if(y==1)
+	{
+	
+		
+		ArrayList<AssetTransferBean> rb=um.manager_viewAssetTransferReq(manager_id);
+		 mv=new ModelAndView("manager_asset_transfer_RequestByEmp");
+		 
+		 mv.addObject("Employee_request",rb);
+		
+	}
+	return mv;
+}
+
+
 
 
 }

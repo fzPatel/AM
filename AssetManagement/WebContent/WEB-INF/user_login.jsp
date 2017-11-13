@@ -54,7 +54,7 @@ ${loginFailedmsg}
 						</td>
 					</tr>   -->
 					
-					<tr><td>User Id</td><td><input type="text" name="userid" required/></td></tr>
+					<tr><td>User Id</td><td><input type="text" maxlength="3" name="userid" required/></td></tr>
 					<tr><td>Password</td><td><input type="password" name="password" required/></td></tr>
 					<td><input type="submit" name="submit" value="submit"/></td>
 					<td><input type="reset" name="reset" value="reset"/></td>

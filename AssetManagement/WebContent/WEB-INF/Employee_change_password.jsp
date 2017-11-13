@@ -9,6 +9,14 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+
+body{
+background-image:url('https://imgur.com/BPE2EiH.jpg');
+background-size:cover;
+height:100%;
+}
+</style>
 <title>Change Password</title>
 
 
@@ -19,7 +27,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-		
+		$("#resetdiv2").hide();
 		$("#oldpassword").blur(function(){
 			
 			var oldpassword = $("#oldpassword").val();
@@ -38,22 +46,21 @@
 					
 					if(result.match(oldpassword))
 						{
-					
+						$("#form").show();
+						$("#resetdiv2").hide();
 						$("#newpasswordId").show();
 						$("#conformpasswordId").show();																
 						$("#submitbuttonId").show();
 						}
-					else
+					else 
 						{
+						alert("password doesn't match");
+						$("#form").show();
+						$("#resetdiv2").show();
 						$("#newpasswordId").hide();
 						$("#conformpasswordId").hide();																
 						$("#submitbuttonId").hide(); 
-					
-						}
-					
-					
-					
-				}	
+						}}	
 			});
 			
 		});
@@ -62,14 +69,6 @@
 
 </script>
 
-<style type="text/css">
-
-body{
-background-image:url('https://imgur.com/p7L8a5E.jpg');
-background-size:cover;
-height:100%;
-}
-</style>
 
 </head>
 
@@ -126,26 +125,34 @@ return false;
 }  
 }  
 </script>  
-  
+  	<div class="ex" id="form">
 <form name="f1" action="./Employeechangepwdsubmit" onsubmit="return matchpass()" method="post">
 
 <input size="5px" id="employeeid" type="hidden"  value="<%=session.getAttribute("user_session")%>" readonly="readonly"/>
-<tr id="oldpasswordId"><td>Old Password:  <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter Old Password" required/>
+<tr id="oldpasswordId">
+<td>Old Password:      <input type="password" id="oldpassword" name="oldpassword" placeholder="Enter Old Password" required/>
 	<div id="mid"></div>
 </td>
 </tr>
  
 <tr id="newpasswordId">
-<td>New Password:<input type="password" name="password" id="newpassword" placeholder="Enter New Password" required/></td></tr>  
-<tr id="conformpasswordId"><td>Conform Password:<input type="password" name="password2"  placeholder="Conform Password" required/></td></tr>
-
-<tr><td>
+<td>New Password:      <input type="password" name="password" id="newpassword" placeholder="Enter New Password" required/></td></tr>  
+<tr id="conformpasswordId">
+<td>Conform Password:  <input type="password" name="password2"  placeholder="Conform Password" required/></td></tr>
+<tr>
+<td>
 <center>
-
 <input id="submitbuttonId" type="submit" value="submit" ></center>
-</td></tr>
+<div id="resetdiv2">
+    			<input type="reset" value="ResetToForm" id="reset1"/>
+</div>	
+</td>
+</tr>
 
 </form> 
+</div>
+
+
 </center>
 </table>
 

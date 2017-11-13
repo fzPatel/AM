@@ -1,19 +1,44 @@
 package com.asset_management.beans;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+
+@Entity
+@Table(name="AssetTransfer")
 public class AssetTransferBean 
 {
 
 @Id
+@GeneratedValue
 int transferid;
+
 int fromempid;
 int managerid;
 int assetid;
 String assetname;
 int toempid;
+String transferrequestdate;
+
+@Column(columnDefinition = "varchar(15) default null")
 String transferdate;
+
+
+@Column(columnDefinition = "int default 0")
 int transferstatus;
+
+
+
+
+public String getTransferrequestdate() {
+	return transferrequestdate;
+}
+public void setTransferrequestdate(String transferrequestdate) {
+	this.transferrequestdate = transferrequestdate;
+}
 public int getTransferid() {
 	return transferid;
 }

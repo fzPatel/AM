@@ -35,8 +35,7 @@ height:100%;
 	<tr>
 		<td>
 			<form action="./viewassetrequest" method="post">
-				<input type="hidden" name="usersession" value="${user_session}"/>
-				
+				<input type="hidden" name="usersession" value="${user_session}"/>				
 				<input type="submit"  name="viewassetrequest" value="view asset request"/>
 			</form>
 		</td>
@@ -49,11 +48,21 @@ height:100%;
 			</form>
 		</td>
 	</tr>
+	
+	<tr>
+		<td>
+			<form action="./retrivesupportdetails" method="post">
+				<input type="hidden" name="supportid" value="${support_session}"/>			
+				<input type="submit"  name="submit" value="Update Profile"/>
+			</form>
+		</td>
+	</tr>	
+	
+	
 	<tr>
 		<td>
 			<form action="./changesupportpassword" method="post">
-				<input type="hidden" name="hidden3" value="${user_session}"/>
-			
+				<input type="hidden" name="hidden3" value="${user_session}"/>			
 				<input type="submit"  name="" value="change Password"/>
 			</form>
 		</td>

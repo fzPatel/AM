@@ -1,19 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
+
+<title>Pending Request</title>
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Transfer Request </title>
-</head>
-<body>
-
-
-
-<html>
-
-<title>Asset Transfer Request</title>
-<head>
 
 <style type="text/css">
 
@@ -26,16 +20,26 @@ height:100%;
 
 </head>
 
+
 <body>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+   <a href="./BackbtnMangerhome"><img src="https://imgur.com/tzbW2jt.png"   width="110px" height="70px" alt="logo" /></a>
+        </div>
+    <div>
+      <ul class="nav navbar-nav">
+	<li><a href="./BackbtnMangerhome" >Home</a></li>
+	   <li><a href="./logout">logout</a></li>
+      </ul>  
+    </div>
+  </div>
+</nav>
 
 
-<h4 align="right"><a href="./BackbtnMangerhome" >Home</a>  &nbsp;| &nbsp;<a href="./logout">logout</a></h4> 
-	
-	
+<h1>Trasfer Asset Requested </h1>
 
-
-
-
+<%-- 
 <%UserBean ub1=(UserBean)session.getAttribute("My_Request_To_Id&MyEmail"); 
 String Emailid=ub1.getEmailid();
 int supportid=ub1.getSupportid();
@@ -46,77 +50,77 @@ int supportid=ub1.getSupportid();
 	<h4 align="left"><font color="blue"> Your EmailID: <%=Emailid %></font></h4> 
 	<h4 align="left"><font color="blue"> Your Support ID:<%=supportid %></font></h4> 
 
-
-<h1>Pending Asset Transfer Request </h1>
+ --%>
 </br>
 </br>
 
 <%@page import="java.util.ArrayList,com.asset_management.beans.*"%>
 <%
-ArrayList<RequestBean> ar=(ArrayList<RequestBean>)request.getAttribute("Employee_request");
+ArrayList<AssetTransferBean> ar=(ArrayList<AssetTransferBean>)request.getAttribute("Employee_request");
 if(!ar.isEmpty())
 {
 	
 %>	
 <table border="1">
-<tr><th>RequestID</th><th>EmployeeId</th><th>Asset Name</th><th>Requested Date</th><th>Status</th><th>EmailId</th><th>Action</th></tr>
+<tr><th>TranferId</th><th>AssetID</th><th>Asset Name</th><th>From EmployeeId</th><th>To EmployeeId</th><th>Transfer Date</th><th>Status</th><th>Action</th></tr>
 
 <%
 
 
-
 for(Object o:ar)
 {
-	RequestBean ub=null;
-if(o instanceof RequestBean)
-	ub=(RequestBean)o;
+	AssetTransferBean ub=null;
+if(o instanceof AssetTransferBean)
+	ub=(AssetTransferBean)o;
 %>
 <tr>
-<td><%=ub.getRequestid()%></td>
-<td><%=ub.getEmployeeid()%></td>
+<td><%=ub.getTransferid()%></td>
+<td><%=ub.getAssetid()%></td>
 <td><%=ub.getAssetname()%></td>
-<td><%=ub.getRequestdate()%></td>
+<td><%=ub.getFromempid()%></td>
+<td><%=ub.getToempid()%></td>
+<td><%=ub.getTransferdate()%></td>
+
+
+
 <% 
-										if(ub.getStatus()==0)
+										if(ub.getTransferstatus()==0)
 										{
 										%>									
-											<td><h5> <font color="Orange">Pending by Manager</font></h5></td>
+											<td><h5> <font color="Orange">Pending by Your Manager</font></h5></td>
 										<%
 										}
-										else if(ub.getStatus()==1)
+										else if(ub.getTransferstatus()==1)
 										{%>									
-											<td><h5> <font color="Green">Approved by Manager</font></h5></td>
+											<td><h5> <font color="Green">Approved by Your Manager</font></h5></td>
 										<%}
-										else if(ub.getStatus()==2)
+										else if(ub.getTransferstatus()==2)
 										{%>									
-											<td><h5><font color="Red">Rejected by Manager</font></h5></td>
+											<td><h5><font color="Red">Rejected by Your Manager</font></h5></td>
 										<%}
 
-										else if(ub.getStatus()==4)
+										else if(ub.getTransferstatus()==4)
 										{%>									
 											<td><h5> <font color="Green">Dispatched by Support</font></h5></td>
 										<%}
-										else if(ub.getStatus()==5)
+										else if(ub.getTransferstatus()==5)
 										{%>									
 											<td><h5><font color="Red">Rejected by Support</font></h5></td>
 										<%}
 %>
 
-<td><%=ub.getEmailid()%></td>
-
 <td colspan="2">
-				<form action="./aprooveEmprequest">
-				<input type="hidden" name="employeeid" value="<%=ub.getEmployeeid()%>"/>
-		
-				<input type="hidden" name="requestid" value="<%=ub.getRequestid()%>"/>
+				<form action="./aprooveAssetTransferEmprequest" method="post">
+				<input type="hidden" name="fromempid" value="<%=ub.getFromempid()%>"/>
+				<input type="hidden" name="transferid" value="<%=ub.getTransferid()%>"/>
 				<input type="submit" name="submit" value="approve"/>												
 					</form>
 				</td>
 				<td>		
-				<form action="./rejectEmprequest">
-										<input type="hidden" name="requestid" value="<%=ub.getRequestid()%>"/>
+				<form action="./rejectAssetTransferEmprequest" method="post">
+					<input type="hidden" name="transferid" value="<%=ub.getTransferid()%>"/>
 						
-						<input type="hidden" name="employeeid" value="<%=ub.getEmployeeid()%>"/>
+						<input type="hidden" name="fromempid" value="<%=ub.getFromempid()%>"/>
 					<input type="submit" name="submit" value="reject"/>												
 				</form>
 					</td>	
@@ -140,9 +144,3 @@ if(o instanceof RequestBean)
 
 </center>
 </body></html>
-
-
-
-
-</body>
-</html>
