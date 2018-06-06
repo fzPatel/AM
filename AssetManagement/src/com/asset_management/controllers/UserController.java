@@ -3,6 +3,7 @@ package com.asset_management.controllers;
 import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -30,6 +31,10 @@ public class UserController {
 		m.addAttribute("common","Asset Management");
 	}
 		
+	
+	
+	//----------Back button---------//
+
 	@RequestMapping("/backtoindex")
 	public ModelAndView backtoindex()
 	{
@@ -48,7 +53,8 @@ public class UserController {
 	}
 	
 
-	
+	//---------- Check Userlogin---------//
+
 	
 	@RequestMapping("/userlogin")
 	protected ModelAndView userlogin(@RequestParam  int userid,@RequestParam String password)
@@ -97,7 +103,7 @@ public class UserController {
 				
 		}
 		else
-			mv=new ModelAndView("user_login");
+			mv=new ModelAndView("index");
 		mv.addObject("loginFailedmsg","Login Failed Try again");
 
 		return mv;
@@ -132,7 +138,7 @@ public class UserController {
 	
 	
 	
-	
+	//---------- Check userMobileAlreadyExistsOrNot---------//
 
 	
 	@RequestMapping("/UserMobileAlreadyExistsOrNot")
@@ -151,5 +157,48 @@ public class UserController {
 		return mv;
 	}
 	
+
+	
+	//==============forgetpwd----------------//
+
+	@RequestMapping("/forgetpwd")
+	public ModelAndView forget()
+	{
+		mv=new ModelAndView("forgetPassword");
+		return mv;
+	}
+	
+	@RequestMapping("/forgetpwdSubmit")
+	public ModelAndView forgetsubmit(@RequestParam  String emailid)
+	{
+	
+		int x=new UserModel().forgetPassword(emailid);
+
+		if(x!=0) 
+		{
+			mv=		mv=new ModelAndView("forgetPassword");
+			mv.addObject("send mail","mailmsg");
+			
+		}
 		
+		
+		return mv;
+	}
+	
+	//forgetpasswordUserAlreadyExistsOrNot//
+	
+	@RequestMapping("/forgetpasswordUserAlreadyExistsOrNot")
+	protected void forgetpasswordUserAlreadyExistsOrNot(@RequestParam  String emailid,HttpServletResponse response )throws Exception
+	{ 
+		int x=new UserModel().checkExistanceOfUser(emailid);
+		PrintWriter out=response.getWriter();
+		if(x==1)
+		{
+			out.println(x);			
+		}
+		
+	}
+	
+	
+
 }

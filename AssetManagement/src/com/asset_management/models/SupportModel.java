@@ -19,11 +19,12 @@ import com.asset_management.beans.UserBean;
 
 public class SupportModel {
 
+	/*retriving all the requests*/
 	public ArrayList<RequestBean> retriveRequests(String usersession)
-	{
-		
+	{		
 		int x=0;
 		RequestBean rb=null;
+		/*array list of type RequestBean*/
 		ArrayList<RequestBean> al=new ArrayList<RequestBean>();
 		try
 		{		
@@ -31,9 +32,11 @@ public class SupportModel {
 			Session ss=sf.openSession();
 			Transaction tx1=ss.beginTransaction();
 		
+			/*retriving all the data form the table corresponding to RequestBean POJO class*/
 			Criteria ct=ss.createCriteria(RequestBean.class);
-//			ct.add(Restrictions.eq("usersession",usersession));
+//			ct.add(Restrictions.eq("usersession",usersession));	
 			
+			/*setting the list*/
 			List<RequestBean> list=ct.list();
 			if(list.isEmpty())
 			{}
@@ -41,7 +44,10 @@ public class SupportModel {
 			{
 				for(RequestBean rb1:list)
 				{
+					/*making a new object every time*/
 					rb=new RequestBean();
+					
+					/*setting all the attributes*/
 					
 					rb.setRequestid(rb1.getRequestid());
 					rb.setEmployeeid(rb1.getEmployeeid());
@@ -52,8 +58,9 @@ public class SupportModel {
 					rb.setStatus(rb1.getStatus());	
 					rb.setEmailid(rb1.getEmailid());
 					rb.setDesignation(rb1.getDesignation());
-					al.add(rb);
 					
+					/*every time object is adding to the array list*/ 
+					al.add(rb);					
 				}
 				
 			}
@@ -81,8 +88,11 @@ public class SupportModel {
 		Session ss=sf.openSession();
 		Transaction tx1=ss.beginTransaction();
 			
+
+		/*query for updating*/
 			Query q=ss.createQuery("update RequestBean set status=:a where employeeid=:b and requestid=:c");
-									
+				
+			/*setting the parameters*/
 			q.setParameter("a",4);
 			q.setParameter("b", employeeid);
 			q.setParameter("c", requestid);			
@@ -93,6 +103,7 @@ public class SupportModel {
 	}
 	
 	
+	/*inserting into table of AllocatedAssetsBean POJO*/
 	public int insert(int employeeid,String assetname,String dateofallocation,int supportid,String emailid)
 	{
 		int y=0;
@@ -100,12 +111,16 @@ public class SupportModel {
 		Session ss=sf.openSession();
 		Transaction tx1=ss.beginTransaction();
 		
-		AllocatedAssetsBean aab = new AllocatedAssetsBean();			
+		AllocatedAssetsBean aab = new AllocatedAssetsBean();
+		/*setting all the values*/
+		
 		aab.setUserid(employeeid);
 		aab.setAssetname(assetname);
 		aab.setDateofallocation(dateofallocation);
         aab.setEmailid(emailid);
        Transaction tx2=ss.beginTransaction();
+       
+       /*saving the object*/
         ss.save(aab);
         	y=1;		
 		tx2.commit();
@@ -121,22 +136,24 @@ public class SupportModel {
 	public int cancelRequest(int supportid,int employeeid,int requestid)
 	{		
 		int x=0;
-		int z=0;
 		
 		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
 		Session ss=sf.openSession();
 		Transaction tx1=ss.beginTransaction();
 			
-			Query q=ss.createQuery("update RequestBean set status=:a where employeeid=:b and requestid=:c and supportid=:d");
+		/*query for cancelling the asset request*/
+			Query q=ss.createQuery("update RequestBean set status=:a where employeeid=:b and requestid=:c");
+			
+			/*setting the parameters*/
 			q.setInteger("a",5);
 			q.setInteger("b", employeeid);
-			q.setInteger("c", requestid);
-			q.setInteger("d", supportid);
+			q.setInteger("c", requestid);		
 			
+			System.out.println(employeeid+ " "+requestid+" "+supportid);
 			x=q.executeUpdate();
 			tx1.commit();
 			ss.close();
-			
+			System.out.println(" x"+x);
 
 		return x;
 	}
@@ -148,15 +165,12 @@ public class SupportModel {
 	
 	
 	
-	
-	
-	
-	
-	
-//==========================================================================================	
+//============================method to retrive reports============================	
 	public ArrayList<AllocatedAssetsBean> retriveReports()
 	{
 		AllocatedAssetsBean aab=null;
+		/*array list of type AllocatedAssetsBean*/
+		
 		ArrayList<AllocatedAssetsBean> al=new ArrayList<AllocatedAssetsBean>();
 		try
 		{
@@ -164,15 +178,18 @@ public class SupportModel {
 			Session ss=sf.openSession();
 			Transaction tx1=ss.beginTransaction();
 		
+			/*retriving all the details from the table declared in the AllocatedAssetsBean*/
 			Criteria ct=ss.createCriteria(AllocatedAssetsBean.class);		
 			List<AllocatedAssetsBean> list=ct.list();
 			if(list.isEmpty())
 			{}
 			else
 			{
-				
+				/*retriving data from the list*/
 				for(AllocatedAssetsBean aab1:list)
 				{
+					/*every time it will make a new object*/
+					
 					aab=new AllocatedAssetsBean();
 					aab.setAssetid(aab1.getAssetid());
 					aab.setUserid(aab1.getUserid());
@@ -180,6 +197,7 @@ public class SupportModel {
 					aab.setDateofallocation(aab1.getDateofallocation());
 					aab.setEmailid(aab1.getEmailid());
 				
+					/*adding object to array list every time*/
 					al.add(aab);
 					
 				}
@@ -218,7 +236,10 @@ public class SupportModel {
 			Session ss=sf.openSession();
 			Transaction tx1=ss.beginTransaction();
 			
+			/*query to update the passwordf of the support*/
 			Query q=ss.createQuery("update UserBean set password=:a where supportid=:b and designation=:c");
+			
+			/*setting the parameters*/
 			q.setString("a",password);
 			q.setInteger("b", support_session);
 			q.setString("c", user_designation);
@@ -281,10 +302,11 @@ public class SupportModel {
 	
 	
 	
-	
+	/*method to retrive the details of support*/
 	public ArrayList<UserBean> retriveSupportDetails(int supportid)
 	{
 		UserBean ub=null;
+		/*array list of type UserBean*/
 		ArrayList<UserBean> al=new ArrayList<UserBean>();
 		try
 		{
@@ -292,9 +314,12 @@ public class SupportModel {
 			Session ss=sf.openSession();
 			Transaction tx1=ss.beginTransaction();
 		
+			/*fetching the details of support with the table declared in the UserBean*/
 			Criteria ct=ss.createCriteria(UserBean.class);	
 			ct.add(Restrictions.eq("supportid",supportid));
 			ct.add(Restrictions.eq("designation","support"));
+			
+			/*details stored in the list*/
 			List<UserBean> list=ct.list();
 			if(list.isEmpty())
 			{}
@@ -303,6 +328,7 @@ public class SupportModel {
 				
 				for(UserBean ub1:list)
 				{
+					/*creating a new object of UserBean every time*/
 					ub=new UserBean();
 
 					ub.setFirstname(ub1.getFirstname());
@@ -312,6 +338,8 @@ public class SupportModel {
 					ub.setPassword(ub1.getPassword());
 					ub.setDesignation(ub1.getDesignation());
 					ub.setDateofjoining(ub1.getDateofjoining());
+					
+					/*adding every object to array list every time*/
 					al.add(ub1);
 					
 				}
@@ -445,7 +473,11 @@ public class SupportModel {
 			Session ss=sf.openSession();
 			
 			Transaction tx1=ss.beginTransaction();
+			
+			/*query for update the details of support*/
 			Query query=ss.createQuery("update UserBean set firstname=:a,lastname=:b,emailid=:c,password=:d,mobile=:e where supportid=:f and designation=:g");
+			
+			/*setting the updated values of support*/
 			query.setString("a",firstname);
 			query.setString("b",lastname);
 			query.setString("c",emailid);
@@ -453,7 +485,6 @@ public class SupportModel {
 			query.setString("e",mobile);
 			query.setInteger("f",supportid);
 			query.setString("g","support");
-			
 			x=query.executeUpdate();
 			tx1.commit();
 			ss.close();

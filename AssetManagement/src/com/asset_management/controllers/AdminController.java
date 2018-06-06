@@ -3,10 +3,8 @@ package com.asset_management.controllers;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +13,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.asset_management.beans.AdminBean;
+import com.asset_management.beans.AllocatedAssetsBean;
 import com.asset_management.beans.UserBean;
-import com.asset_management.mail.Email;
 import com.asset_management.models.AdminModel;
-
-
 
 @Controller
 @SessionAttributes("admin_session")
@@ -41,6 +37,7 @@ ModelAndView mv=null;
 		mv=new ModelAndView("index");
 		return mv;
 	}
+	
 	
 	@RequestMapping("/adminhome")
 	public ModelAndView adminhome()
@@ -75,7 +72,7 @@ ModelAndView mv=null;
 			}
 			else 
 			{			
-				mv=new ModelAndView("admin_login");
+				mv=new ModelAndView("index");
 				mv.addObject("errormag","Login Failed");			
 			}
 		
@@ -238,11 +235,6 @@ ModelAndView mv=null;
 	
 	
 	
-	
-	
-	
-	
-	
 
 	@RequestMapping("/adminchangepassword")
 	public ModelAndView adminchangepassword()
@@ -337,4 +329,74 @@ ModelAndView mv=null;
 			 	System.out.println(x);
 
 		}
+	
+	
+	
+	
+	
+	@RequestMapping("/promotion")
+	public ModelAndView promotion(@RequestParam String emailid,@RequestParam String designation,@RequestParam String firstname,@RequestParam String lastname,@RequestParam int managerid,@RequestParam int employeeid,@RequestParam int supportid)
+	{
+		
+		
+			mv=new ModelAndView("feed_promotion_details");
+			mv.addObject("emailid",emailid);
+			mv.addObject("designation",designation);
+			mv.addObject("firstname",firstname);
+			mv.addObject("lastname",lastname);
+			mv.addObject("managerid",managerid);
+			mv.addObject("employeeid",employeeid);
+			mv.addObject("supportid",supportid);
+			
+		return mv;
+	}
+	
+	
+	@RequestMapping("/promotionanddemotion")
+	public ModelAndView promotionAndDemotion(@ModelAttribute("UserBean") UserBean ub)
+	{
+		int y=new AdminModel().promotionAndDemotion(ub);
+		
+		if(y!=0)
+		{
+
+			ArrayList<UserBean> al=new AdminModel().retriveAllUsers();
+			mv=new ModelAndView("show_users");
+			mv.addObject("users_arraylist", al);
+			mv.addObject("user_updated","Successfully updated");
+		}
+		else
+		{
+			
+			ArrayList<UserBean> al=new AdminModel().retriveAllUsers();
+			mv=new ModelAndView("show_users");
+			mv.addObject("users_arraylist", al);
+			mv.addObject("user_updated","Failed to  updated");
+		}
+		return mv;
+	}
+	
+	
+	
+
+	
+	
+	
+	@RequestMapping("/retriveAllocatedAssets")
+	public ModelAndView retriveAllocatedAssets()
+	{
+		ArrayList<AllocatedAssetsBean> al=(ArrayList<AllocatedAssetsBean>) new AdminModel().viewallcatedasset();
+		if(al!=null)
+		{
+			mv=new ModelAndView("AdminViewAllAllocatedAset");
+			mv.addObject("assetlist", al);
+		}
+		else
+		{
+			mv=new ModelAndView("");
+			mv.addObject("", al);
+		}
+		return mv;
+	}
+
 }

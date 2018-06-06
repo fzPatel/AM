@@ -163,127 +163,11 @@
 		
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
 
-<script type="text/javascript">
 
-$(document).ready(function()
-		{
-	$("#printmsg").hide();
-	$("#printmobile").hide();
-			$("#emailid").blur(function(){
-				
-			var emailid="emailid="+$("#emailid").val()+"&managerid="+$("#managerid").val();
-			var user_session="user_session="+$("#user_session").val();
-			var managerid="managerid="+$("#managerid").val();		
-					
-					
-			
-				
-					
-					$.ajax({
-						url:'checkemailifexist',
-						data:emailid,
-						type:'post',
-						success:function(result)
-						{
-							if(result.match(1))
-								{
-								
-								$("#printmsg").show();
-								 $("#btnSubmit").prop('disabled', true);
 
-								}
-							else
-								{
-								$("#printmsg").hide();
-								}
-						}
-						
-					})
-			});
-		
-		//Ajax for mobile if exist check-------//	
-			$("#mobile").blur(function(){
-				
-				var mobile="mobile="+$("#mobile").val()+"&managerid="+$("#managerid").val();
-						
-						
-						$.ajax({
-							url:'checkemobileifexist',
-							data:mobile,
-							type:'post',
-							success:function(result)
-							{
-								if(result.match(1))
-								{
-								
-								$("#printmobile").show();
-								 $("#btnSubmit").prop('disabled', true);
-
-								}
-							else
-								{
-								$("#printmobile").hide();
-								}
-							}
-							
-						})
-				});
-			
-			
-		
-		
-		
-			  
-			  $("#firstname").change(function(){
-				  
-			  
-			  var name=$("#firstname").val();
-			  var name_pattern=/[a-zA-Z ]+/;
-			  
-			  if(!name.match(name_pattern))
-				   {
-				  $("#firstname").val('');
-					$("#name1").html("First Name should be alphabets only");
-				    
-				  }
-			  else{
-				  $("#name1").html("");
-			  }
-			  
-			  
-			  
-			  
-			  
-			  });
-			  
-			  
-			  
-			  $("#lastname").change(function(){
-				  
-				  
-				  var name=$("#lastname").val();
-				  var name_pattern=/[a-zA-Z ]+/;
-				  
-				  if(!name.match(name_pattern))
-					   {
-					  $("#lastname").val('');
-						$("#name2").html("Last Name should be alphabets only");
-					    
-					  }
-				  else{
-					  $("#name2").html("");
-				  }
-				  
-				  
-				  
-				  
-				  
-				  });
-			  
-			  
-		});
-		</script>
+</script> 
 
 	
 	
@@ -317,16 +201,16 @@ $(document).ready(function()
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Manager <b class="fa fa-angle-down"></b></a>
                 <ul class="dropdown-menu">
-                    <li><a href="./managerchangepwd"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
+                    <li><a href="./change_password"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
                     <li class="divider"></li>
                     <li><a href="./logout"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
                 </ul>
             </li>
         </ul>
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
+         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                <li>
+               <li>
                     <a href="#" data-toggle="collapse" data-target=""> </a>
                     
                 </li>
@@ -369,29 +253,13 @@ $(document).ready(function()
         <!-- /.navbar-collapse -->
     </nav>
 
-
-
-
-
-
-<%@page import="java.util.ArrayList,com.asset_management.beans.*"%>
-<%UserBean ub1=(UserBean)session.getAttribute("My_Request_To_Id&MyEmail"); 
-String Emailid=ub1.getEmailid();
-int supportid=ub1.getSupportid();
-%>
-
-
-
     <div id="page-wrapper">
         <div class="container-fluid">
             <!-- Page Heading -->
             <div class="row" id="main" >
                 <div class="col-sm-12 col-md-12 well" id="content">
 				<h1>Welcome Manager</h1>
-                <h4>Manager ID ${user_session}</h4> 
-				<h4>E-mail ID: <%=Emailid %></h4>
-				<h4>Support ID: <%=supportid %></h4> 
-                                     </div>
+                <h4>Manager ID ${user_session}</h4>                      </div>
             </div>
             <!-- /.row -->
         </div>
@@ -401,57 +269,124 @@ int supportid=ub1.getSupportid();
 </div><!-- /#wrapper -->
 
 
+ 
 
- <%@page import="com.asset_management.beans.UserBean" %>
-    <%@page import="java.util.ArrayList" %>
 
+
+<center>
+
+
+<h1>My Requested Asset </h1>
+
+<%-- 
+<%UserBean ub1=(UserBean)session.getAttribute("My_Request_To_Id&MyEmail"); 
+String Emailid=ub1.getEmailid();
+int supportid=ub1.getSupportid();
+%>
+
+
+	<h4 align="left"><font color="blue"> Your ID: ${user_session}</font></h4> 
+	<h4 align="left"><font color="blue"> Your EmailID: <%=Emailid %></font></h4> 
+	<h4 align="left"><font color="blue"> Your Support ID:<%=supportid %></font></h4> 
+
+ --%>
+</br>
+</br>
+
+<%@page import="java.util.ArrayList,com.asset_management.beans.*"%>
+<%
+ArrayList<AssetTransferBean> ar=(ArrayList<AssetTransferBean>)request.getAttribute("Employee_request");
+if(!ar.isEmpty())
+{
+	
+%>	
+<table border="1">
+<tr><th>TranferId</th><th>AssetID</th><th>Asset Name</th><th>From EmployeeId</th><th>To EmployeeId</th><th>Transfer Request Date</th><th>Status</th></tr>
 
 <%
-	UserBean eb=(UserBean)request.getAttribute("Profile");
-		if(eb!=null)
-		{
-			%>
-			<center>
-			<font color="orange"><h1>Update Profile</h1></font>
-			<form action="./managerprofileUpdate" method="Post">
+
+
+for(Object o:ar)
+{
+	AssetTransferBean ub=null;
+if(o instanceof AssetTransferBean)
+	ub=(AssetTransferBean)o;
+%>
+<tr>
+<td><%=ub.getTransferid()%></td>
+<td><%=ub.getAssetid()%></td>
+<td><%=ub.getAssetname()%></td>
+<td><%=ub.getFromempid()%></td>
+<td><%=ub.getToempid()%></td>
+<td><%=ub.getTransferrequestdate()%></td>
+
+
+
+<% 
+										if(ub.getTransferstatus()==-1)
+										{
+										%>									
+											<td><h5> <font color="Orange">Pending by Employee</font></h5></td>
+										<%
+										}
+										else if(ub.getTransferstatus()==0)
+										{%>									
+											<td><h5> <font color="Green">Approved by your Manager</font></h5></td>
+										<%}
+										else if(ub.getTransferstatus()==1)
+										{%>									
+											<td><h5><font color="Red">Rejected by your Manager</font></h5></td>
+										<%}
+
+										else if(ub.getTransferstatus()==2)
+										{%>									
+											<td><h5> <font color="Orange">Pending by RequestTo Manager</font></h5></td>
+										<%}
+										else if(ub.getTransferstatus()==3)
+										{%>									
+											<td><h5> <font color="Green">Approved by RequestTo Manager</font></h5></td>
+										<%}
+										else if(ub.getTransferstatus()==4)
+										{%>									
+											<td><h5><font color="Red">Rejected by RequestTo Manager</font></h5></td>
+										<%}
+										else if(ub.getTransferstatus()==6)
+										{%>									
+											<td><h5><font color="Red">Approved by your Employee</font></h5></td>
+																			
+											
+										<%
+										
+										
+}
+										else if(ub.getTransferstatus()==7)
+										{%>									
+											<td><h5><font color="Red">Rejected by your Employee</font></h5></td>
+										<%}
+%>
+
 			
-				<table>
-							
-					
-					<tr><td><font color="orange"> First Name</font></td><td><input type="text" name="firstname" id="firstname" value="<%=eb.getFirstname()%>"`/>&nbsp;</td></tr>
-					
-								<tr><td><font color="red" size="4"><div id="name1"></div></font></td><tr>
-					
-					<tr><td><font color="orange"> Last Name</font></td><td><input type="text" name="lastname" id="lastname" title="only alphabet" value="<%=eb.getLastname()%>"required/>&nbsp;</td></tr>
-										<tr><td><font color="red" size="4"><div id="name2"></div></font></td><tr>
-					
-					<tr><td><font color="orange"> Email Id</font></td><td><input id=emailid type="email" name="emailid" title="Example - abc@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="<%=eb.getEmailid()%>" required />&nbsp;</td></tr>
-					<tr id="printmsg"><td><input type="text" placeholder="Email id already exists!!!!" readonly/></td></tr>
-					<tr><td><font color="orange"> Manager Id</font></td><td><input type="text" name="managerid" id="managerid" value="<%=eb.getManagerid()%>" readonly/>&nbsp;</td></tr>
-					<tr><td><font color="orange"> Designation</font></td><td><input type="text" name="designation" value="<%=eb.getDesignation()%>"readonly/>&nbsp;</td></tr>
-					<tr><td><font color="orange">Mobile </font></td><td><input type="text" id="mobile" name="mobile" maxlength="10" title="Enter Valid Mobile Number" pattern="[0-9]{10}" value="<%=eb.getMobile()%>"required/>&nbsp;</td></tr>
-					<tr id="printmobile"><td><input type="text" placeholder="Mobile number already exists!!!!" readonly/></td></tr>
-					<tr><td><font color="orange">Date Of Joining</font></td><td><input type="date" name="dateofjoining" value="<%=eb.getDateofjoining()%>"readonly/>&nbsp;</td></tr>
-					<tr><td><font color="orange"> Status</font></td><td><input type="text" name="status" value="<%=eb.getStatus()%>" readonly/>&nbsp;</td></tr>
-					<tr><td><input type="hidden" name="hidden" value="<%=eb.getEmailid()%>"/>&nbsp;</td></tr>
-					<tr><td><input type="hidden" name="user_session" id="user_session" value="${user_session}"/>&nbsp;</td></tr>
-					
-					
-					
-					<tr>
-						<td><input type="submit" id="btnSubmit" name="submit" value="update now" /></td>
-						<td><button type="button" onClick="window.location.reload();">Refresh</button></td>
-					</tr>
-				
-				</table>
-				</form>
-				</center>				
-			<%
-		}
+</tr>
+<% 
+}
+}else
+{
+	
 	%>
+	
+	
+	<h1>No Pending Request By Employee !! </h1>
+
+	<%
+	
+	
+}
+%>
+</table>
 
 
 
+</center>
 
 </body>
 </html>

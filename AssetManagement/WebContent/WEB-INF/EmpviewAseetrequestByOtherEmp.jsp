@@ -189,7 +189,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://cijulenlinea.ucr.ac.cr/dev-users/">
+            <a class="navbar-brand" href="">
                 <img src="https://imgur.com/TIiwKNq.jpg" height="60px" width="200px" alt="LOGO"">
             </a>
         </div>
@@ -201,7 +201,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Employee <b class="fa fa-angle-down"></b></a>
                 <ul class="dropdown-menu">
-
+                   
                     <li><a href="./change_password"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
                     <li class="divider"></li>
                     <li><a href="./logout"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
@@ -211,7 +211,7 @@
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                 <li>
+                <li>
                     <a href="#" data-toggle="collapse" data-target=""> </a>
                     
                 </li>
@@ -239,9 +239,9 @@
                     <ul id="submenu-1" class="collapse">
                         <li><a href="./empViewAllAssets"><i class="fa fa-angle-double-right"></i> VIEW ALL ALLOCATED ASSETS</a></li>
                         <li><a href="./EmpviewAseetrequestByOtherEmp"><i class="fa fa-angle-double-right"></i> VIEW ASSET REQUEST BY OTHER EMPLOYEE</a></li>
-                        <li><a href="./EmpviewAseetrequestByMe"><i class="fa fa-angle-double-right"></i> VIEW MY ASSET TRANSFER STATUS</a></li>
-                                            <li><a href="./RequestbyManager"><i class="fa fa-angle-double-right"></i> MANAGER REQUEST TO EMP FOR AN ASSETS</a></li>
-                    </ul>
+                      <li><a href="./EmpviewAseetrequestByMe"><i class="fa fa-angle-double-right"></i> VIEW MY ASSET TRANSFER STATUS</a></li>
+                                      <li><a href="./RequestbyManager"><i class="fa fa-angle-double-right"></i> MANAGER REQUEST TO EMP FOR AN ASSETS</a></li>
+                </ul>
                 </li>
             </ul>
         </div>
@@ -270,34 +270,91 @@
 
 <center>
 
+<h1>view all assets</h1>
 
-<h1>My assets</h1>
+<h2>${requestmsg}</h2>
+
+
+<%
+int user=(int)session.getAttribute("user_session");
+
+%>
+
 <table border="1">
 
-<tr><th>AssetID</th><th>AssetName<th>Emailid </th><th> Userid </th><th>Allocation date</th></tr>
+<tr><th>Asset ID<th>AssetName</th><th>Requester ID </th><th>Requested Date</th><th>Status</th><th>Action</th></tr>
 
 	
 
 <%@page import="java.util.List,com.asset_management.beans.*"%>
 <%
-List<AllocatedAssetsBean> ar=(List<AllocatedAssetsBean>)request.getAttribute("LIST");
+List<AssetTransferBean> ar=(List<AssetTransferBean>)request.getAttribute("Employee_request");
 
 
-
-
-for(AllocatedAssetsBean ab:ar)
+for(AssetTransferBean ab:ar)
 {
 
 %>
+<form action="./RequesttoManagerForAppoveRequestedAsset" method="post">
 <tr>
+
 <td><%=ab.getAssetid()%></td>
 <td><%=ab.getAssetname()%></td>
-<td> <%=ab.getEmailid()%></td>
-<td><%=ab.getUserid()%></td>
-<td><%=ab.getDateofallocation()%></td>
+<td><%=ab.getFromempid()%></td>
+<td><%=ab.getTransferrequestdate()%></td>
 
 
+<%if(ab.getTransferstatus()==-1)
+{	
+%>
+<td>Pending by his Manager</td>
+<%	
+}
 
+else if(ab.getTransferstatus()==0)
+{
+%>
+	<td>Approved by his Manager</td>
+<%}else if(ab.getTransferstatus()==1)
+	{
+		
+		%>
+		<td>Rejected by his Manager</td>
+		<%}
+else if(ab.getTransferstatus()==2)
+		{
+			
+			%>
+			<td>Pending by your Manager</td>
+			<%}
+else if(ab.getTransferstatus()==3)
+{
+	
+	%>
+	<td>Approved by your Manager</td>
+	<%}
+else if(ab.getTransferstatus()==4)
+{
+	
+	%>
+	<td>Rejected by your Manager</td>
+	<%}
+%>
+
+
+<!--  emp1 -1= pending with emp1 manager
+			0  Approved by your manager
+			1  Rejected by your manager
+	  emp2 	2  pending with emp2 manager
+	  		3  Approved by your manager
+	  		4  Rejected By your manager	
+ -->
+
+<input type="hidden" name="assetid" value="<%=ab.getAssetid()%>" readonly>
+<input type="hidden" name="transferid" value="<%=ab.getTransferid()%>" readonly>
+<td><input type="submit" value="RequestForTransfer"></td>
+
+</form>
 </tr>
 <% 
 }

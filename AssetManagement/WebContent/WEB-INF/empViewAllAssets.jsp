@@ -189,7 +189,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://cijulenlinea.ucr.ac.cr/dev-users/">
+            <a class="navbar-brand" href="">
                 <img src="https://imgur.com/TIiwKNq.jpg" height="60px" width="200px" alt="LOGO"">
             </a>
         </div>
@@ -201,7 +201,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Employee <b class="fa fa-angle-down"></b></a>
                 <ul class="dropdown-menu">
-
+                 
                     <li><a href="./change_password"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
                     <li class="divider"></li>
                     <li><a href="./logout"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
@@ -211,7 +211,7 @@
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                 <li>
+                <li>
                     <a href="#" data-toggle="collapse" data-target=""> </a>
                     
                 </li>
@@ -240,7 +240,7 @@
                         <li><a href="./empViewAllAssets"><i class="fa fa-angle-double-right"></i> VIEW ALL ALLOCATED ASSETS</a></li>
                         <li><a href="./EmpviewAseetrequestByOtherEmp"><i class="fa fa-angle-double-right"></i> VIEW ASSET REQUEST BY OTHER EMPLOYEE</a></li>
                         <li><a href="./EmpviewAseetrequestByMe"><i class="fa fa-angle-double-right"></i> VIEW MY ASSET TRANSFER STATUS</a></li>
-                                            <li><a href="./RequestbyManager"><i class="fa fa-angle-double-right"></i> MANAGER REQUEST TO EMP FOR AN ASSETS</a></li>
+                                          <li><a href="./RequestbyManager"><i class="fa fa-angle-double-right"></i> MANAGER REQUEST TO EMP FOR AN ASSETS</a></li>
                     </ul>
                 </li>
             </ul>
@@ -270,11 +270,18 @@
 
 <center>
 
+<h1>view all assets</h1>
 
-<h1>My assets</h1>
+
+
+<%
+int user=(int)session.getAttribute("user_session");
+
+%>
+
 <table border="1">
 
-<tr><th>AssetID</th><th>AssetName<th>Emailid </th><th> Userid </th><th>Allocation date</th></tr>
+<tr><th>AssetID</th><th>AssetName<th>Emailid </th><th> Asset holder </th><th>Allocation date</th><th>Action</th></tr>
 
 	
 
@@ -284,26 +291,41 @@ List<AllocatedAssetsBean> ar=(List<AllocatedAssetsBean>)request.getAttribute("LI
 
 
 
-
 for(AllocatedAssetsBean ab:ar)
 {
 
 %>
+<form action="./Askforasset" method="post">
 <tr>
-<td><%=ab.getAssetid()%></td>
-<td><%=ab.getAssetname()%></td>
-<td> <%=ab.getEmailid()%></td>
-<td><%=ab.getUserid()%></td>
+<td><input type="text" name="assetid" value="<%=ab.getAssetid()%>" readonly></td>
+<td><input type="text" name="assetname" value="<%=ab.getAssetname()%>"readonly></td>
+<td><input type="text" name="emailid" value="<%=ab.getEmailid()%>"readonly ></td>
+<td><input type="text" name="toempid" value="<%=ab.getUserid()%>"readonly></td>
 <td><%=ab.getDateofallocation()%></td>
 
 
+<%if(ab.getUserid()!=user) 
+{
+%>
+<td><input type="submit" value="ask for asset"></td>
+
+<%}else
+	
+{
+%>
+	<td>Asset hold by you</td>
+<%	
+	
+} %>
 
 </tr>
+</form>
+
 <% 
 }
 %>
-</table>
 
+</table>
 
 </center>
 

@@ -1,20 +1,14 @@
 package com.asset_management.models;
 
-import java.util.Iterator;
 import java.util.List;
-
-
-
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Restrictions;
-
-import com.asset_management.beans.AdminBean;
 import com.asset_management.beans.UserBean;
+import com.asset_management.mail.Email;
 public class UserModel {
 
 	public int user_login_check(int userid,String password)
@@ -31,6 +25,7 @@ public class UserModel {
 		{
 			ct.add(Restrictions.eq("userid",userid));
 			ct.add(Restrictions.eq("password",password));
+			ct.add(Restrictions.eq("status","A"));
 			/*if(designation.equals("employee"))
 			{
 		
@@ -70,11 +65,6 @@ public class UserModel {
 		ss.close();
 		return x;
 	}
-	
-	
-	
-	
-	
 	
 	
 	//--------------------04 Novmber 2017 Single login page ------------------	
@@ -177,4 +167,69 @@ public class UserModel {
 			{e.printStackTrace();}
 		return x;
 	}
+	
+	
+	
+	public int forgetPassword(String emailid)
+	{
+		int x=0;
+		String pass = null;
+		int userid = 0;
+		
+			try
+			{
+				
+				SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+				Session ss=sf.openSession();
+				Transaction tx1=ss.beginTransaction();
+				
+				Criteria ct=ss.createCriteria(UserBean.class);				
+					ct.add(Restrictions.eq("emailid",emailid));
+				
+					
+					List<UserBean> list=ct.list();
+				
+					if(list.isEmpty())
+					{
+						x=0;
+					}
+					else if(!list.isEmpty())
+					{
+						x=1;
+						System.out.println("MOdel mai......mobile mila");
+						
+						
+						
+
+						for(UserBean u:list)
+						{
+							pass =u.getPassword();
+							userid=u.getUserid();
+						}
+						
+						
+						if(x==1)
+						
+						{
+							
+							Email e=new Email();
+							e.forgetpassword(userid,pass,emailid);
+							
+						}
+						
+						
+						
+						
+					}
+				
+			}
+			catch(Exception e)
+			{e.printStackTrace();}
+		return x;
+	}
+	
+	
+	
+	
+	
 }

@@ -14,6 +14,5 @@
     <mapping class="com.asset_management.beans.RequestBean"/>
     <mapping class="com.asset_management.beans.AllocatedAssetsBean"/>
     <mapping class="com.asset_management.beans.AssetTransferBean"/>
-    
-  </session-factory>
+    </session-factory>
 </hibernate-configuration>

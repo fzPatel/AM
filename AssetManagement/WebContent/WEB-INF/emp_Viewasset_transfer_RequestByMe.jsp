@@ -189,7 +189,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://cijulenlinea.ucr.ac.cr/dev-users/">
+            <a class="navbar-brand" href="">
                 <img src="https://imgur.com/TIiwKNq.jpg" height="60px" width="200px" alt="LOGO"">
             </a>
         </div>
@@ -201,7 +201,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Employee <b class="fa fa-angle-down"></b></a>
                 <ul class="dropdown-menu">
-
+                 
                     <li><a href="./change_password"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
                     <li class="divider"></li>
                     <li><a href="./logout"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
@@ -211,7 +211,7 @@
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                 <li>
+               <li>
                     <a href="#" data-toggle="collapse" data-target=""> </a>
                     
                 </li>
@@ -219,6 +219,7 @@
                     <a href="#" data-toggle="collapse" data-target=""> </a>
                    
                 </li>
+                
                  <li>
                     <a href="./Empviewmyprofile" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-user"> </i> Profile </i></a>
                    
@@ -271,38 +272,101 @@
 <center>
 
 
-<h1>My assets</h1>
-<table border="1">
+<h1>My Requested Asset </h1>
 
-<tr><th>AssetID</th><th>AssetName<th>Emailid </th><th> Userid </th><th>Allocation date</th></tr>
+<%-- 
+<%UserBean ub1=(UserBean)session.getAttribute("My_Request_To_Id&MyEmail"); 
+String Emailid=ub1.getEmailid();
+int supportid=ub1.getSupportid();
+%>
 
-	
 
-<%@page import="java.util.List,com.asset_management.beans.*"%>
+	<h4 align="left"><font color="blue"> Your ID: ${user_session}</font></h4> 
+	<h4 align="left"><font color="blue"> Your EmailID: <%=Emailid %></font></h4> 
+	<h4 align="left"><font color="blue"> Your Support ID:<%=supportid %></font></h4> 
+
+ --%>
+</br>
+</br>
+
+<%@page import="java.util.ArrayList,com.asset_management.beans.*"%>
 <%
-List<AllocatedAssetsBean> ar=(List<AllocatedAssetsBean>)request.getAttribute("LIST");
-
-
-
-
-for(AllocatedAssetsBean ab:ar)
+ArrayList<AssetTransferBean> ar=(ArrayList<AssetTransferBean>)request.getAttribute("Employee_request");
+if(!ar.isEmpty())
 {
+	
+%>	
+<table border="1">
+<tr><th>TranferId</th><th>AssetID</th><th>Asset Name</th><th>From EmployeeId</th><th>To EmployeeId</th><th>Transfer Request Date</th><th>Status</th></tr>
 
+<%
+
+
+for(Object o:ar)
+{
+	AssetTransferBean ub=null;
+if(o instanceof AssetTransferBean)
+	ub=(AssetTransferBean)o;
 %>
 <tr>
-<td><%=ab.getAssetid()%></td>
-<td><%=ab.getAssetname()%></td>
-<td> <%=ab.getEmailid()%></td>
-<td><%=ab.getUserid()%></td>
-<td><%=ab.getDateofallocation()%></td>
+<td><%=ub.getTransferid()%></td>
+<td><%=ub.getAssetid()%></td>
+<td><%=ub.getAssetname()%></td>
+<td><%=ub.getFromempid()%></td>
+<td><%=ub.getToempid()%></td>
+<td><%=ub.getTransferrequestdate()%></td>
 
 
 
+<% 
+										if(ub.getTransferstatus()==-1)
+										{
+										%>									
+											<td><h5> <font color="Orange">Pending by your Manager</font></h5></td>
+										<%
+										}
+										else if(ub.getTransferstatus()==0)
+										{%>									
+											<td><h5> <font color="Green">Approved by your Manager</font></h5></td>
+										<%}
+										else if(ub.getTransferstatus()==1)
+										{%>									
+											<td><h5><font color="Red">Rejected by your Manager</font></h5></td>
+										<%}
+
+										else if(ub.getTransferstatus()==2)
+										{%>									
+											<td><h5> <font color="Orange">Pending by RequestTo Manager</font></h5></td>
+										<%}
+										else if(ub.getTransferstatus()==3)
+										{%>									
+											<td><h5> <font color="Green">Approved by RequestTo Manager</font></h5></td>
+										<%}
+										else if(ub.getTransferstatus()==4)
+										{%>									
+											<td><h5><font color="Red">Rejected by Request To Manager</font></h5></td>
+										<%}
+%>
+
+			
 </tr>
 <% 
 }
+}else
+{
+	
+	%>
+	
+	
+	<h1>No Pending Request By Employee !! </h1>
+
+	<%
+	
+	
+}
 %>
 </table>
+
 
 
 </center>

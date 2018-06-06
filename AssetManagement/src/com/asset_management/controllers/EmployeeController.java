@@ -6,23 +6,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.mail.Session;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.bind.JAXBException;
-
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.xml.sax.SAXException;
-
-import com.asset_management.beans.AdminBean;
 import com.asset_management.beans.AllocatedAssetsBean;
 import com.asset_management.beans.AssetTransferBean;
 import com.asset_management.beans.RequestBean;
@@ -53,9 +44,9 @@ public class EmployeeController
 		
 	@RequestMapping("/Assettranfer")
 	
-public ModelAndView assettransfermethod(HttpSession ss)
+public ModelAndView assettransfermethod(HttpSession session)
 	{
-		int userid=(int)ss.getAttribute("user_session");
+		/*int userid=(int)ss.getAttribute("user_session");
 		System.out.println("user id aaja re"+userid);
 		
 		
@@ -73,10 +64,35 @@ public ModelAndView assettransfermethod(HttpSession ss)
 	    	 System.out.println(list);
 	   System.out.println(list+"list me aa ja re");
 	   
-			return mv;
+			return mv;*/
+		
+		
+		System.out.println("Myasset");
+
+		String emailid=(String)session.getAttribute("Emailid");
+
+	
+		int employeeid=(Integer)session.getAttribute("user_session");
+       
+		ModelAndView mv=null;
+		EmployeeModel am=new EmployeeModel();
+	
+		List<AllocatedAssetsBean> list=am.myasset(employeeid,emailid);
+		
+		List<UserBean> list1=am.myassetofemp(); 
+		
+		
+	 mv=new ModelAndView("assettransferfields");
+		 mv.addObject("LIST",list);
+		 mv.addObject("emplist",list1);
+	return mv;
+			
+		
+		
+		
 }
-	
-	
+
+
 	
 	@RequestMapping ("/createrequestbyemp")
 	public ModelAndView Createreq1()
@@ -159,9 +175,6 @@ public ModelAndView assettransfermethod(HttpSession ss)
 		
 		
 		
-		
-		
-		
 	 mv=new ModelAndView("EmpMyasset");
 		 mv.addObject("LIST",list);
 		 mv.addObject("emplist",list1);
@@ -202,11 +215,7 @@ public ModelAndView assettransfermethod(HttpSession ss)
 		return mv;
 
 	}
-	
-	
-	
-	
-	
+
 	@RequestMapping("/updateprofile") 
 	public ModelAndView Updaterecords(HttpSession ss, @RequestParam int id ,@RequestParam String fname ,@RequestParam String lname ,@RequestParam String email,String mobile)
 	{
@@ -282,7 +291,7 @@ public ModelAndView assettransfermethod(HttpSession ss)
 		      out.println(oldpassword);
 		
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
 			}
 		      
@@ -360,14 +369,20 @@ public ModelAndView assettransfermethod(HttpSession ss)
 	}
 
 
-@RequestMapping ("/trasferassetrequest")
+@RequestMapping ("/Askforasset")
 public ModelAndView trasferassetrequest(@ModelAttribute ("AssetTransferBean")AssetTransferBean ab,HttpSession session)
-		{
+	
+{
 			
 	 ModelAndView mv = null;
 	 
 	 
-		int managerid=(int)session.getAttribute("My_Request_To_Id");
+		int managerid=(int)session.getAttribute("My_Request_To_Id");    //request to my manager
+		
+		int user=(int)session.getAttribute("user_session");
+
+		System.out.println("Data inside askforasset");
+	
 		
 		System.out.println(ab.getAssetid());
 		System.out.println(ab.getAssetname());
@@ -377,7 +392,6 @@ public ModelAndView trasferassetrequest(@ModelAttribute ("AssetTransferBean")Ass
 		System.out.println(ab.getManagerid());
 
  
-	    
 	       EmployeeModel um = new EmployeeModel ();
 	       
 	   	int day, month, year;
@@ -389,7 +403,9 @@ public ModelAndView trasferassetrequest(@ModelAttribute ("AssetTransferBean")Ass
 	   	
 	   	ab.setTransferrequestdate(transferRequestdate);
 	   	ab.setManagerid(managerid);
-	   	
+	   	ab.setFromempid(user);
+	   	int status=-1;
+	   	ab.setTransferstatus(status);
 	   	
 	   	
 	   	System.out.println(ab.getManagerid());
@@ -399,22 +415,210 @@ public ModelAndView trasferassetrequest(@ModelAttribute ("AssetTransferBean")Ass
 	       
 	       int y=um.trasferassetrequest(ab);
 	       
-	       if(y==1)
-	       {
-	    		
-	    	   mv= new ModelAndView("Createrequestemployee");
-	    	   
-	    	   
-	    	  mv.addObject("msg", "Request created successfully");
-	    	  
-	       }
+	       
+	       
+		EmployeeModel am=new EmployeeModel();
+	
+		List<AllocatedAssetsBean> list=am.viewallEmpmyasset();
+
+
+		mv=new ModelAndView("empViewAllAssets");
+		 mv.addObject("LIST",list);
+		 
 		return mv;
-			
+
+
+
+		
+		
 		}
 
+
+
+
+
+
+@RequestMapping ("/empViewAllAssets")
+public ModelAndView viewallassets(HttpSession session)
+{
 	
-		
-		
-	}
+ModelAndView mv = null;
+
+   
+EmployeeModel am=new EmployeeModel();
+
+List<AllocatedAssetsBean> list=am.viewallEmpmyasset();
+
+
+mv=new ModelAndView("empViewAllAssets");
+ mv.addObject("LIST",list);
+ 
+return mv;
+
+}
+
+
+
+
+@RequestMapping("/EmpviewAseetrequestByOtherEmp")
+public ModelAndView EmpviewAseetrequestByOtherEmp(HttpSession ss)
+{
+
+
+	int employee_id=(int) ss.getAttribute("user_session");
 
 	
+	EmployeeModel um=new EmployeeModel();
+
+	ArrayList<AssetTransferBean> rb=um.empviewAseetrequestByOtherEmp(employee_id);
+		 mv=new ModelAndView("EmpviewAseetrequestByOtherEmp");
+		 
+		 mv.addObject("Employee_request",rb);
+	
+	return mv;
+}
+
+
+
+@RequestMapping("/EmpviewAseetrequestByMe")
+public ModelAndView EmpviewAseetrequestByMe(HttpSession ss)
+{
+int employee_id=(int) ss.getAttribute("user_session");
+int managerid=(int)ss.getAttribute("My_Request_To_Id");
+EmployeeModel um=new EmployeeModel();
+ArrayList<AssetTransferBean> rb=um.empviewAseetrequestByMe(employee_id,managerid);
+		 mv=new ModelAndView("emp_Viewasset_transfer_RequestByMe");
+		 mv.addObject("Employee_request",rb);
+	return mv;
+}
+
+
+
+
+
+
+@RequestMapping("/RequesttoManagerForAppoveRequestedAsset")
+public ModelAndView requesttomanager(HttpSession ss,@RequestParam int assetid,@RequestParam int transferid)
+{
+	
+	
+	System.out.println("inside RequesttoManagerForAppoveRequestedAsset "+assetid+transferid);
+	
+	
+	
+	
+	int employee_id=(int) ss.getAttribute("user_session");
+
+	int managerid=(int)ss.getAttribute("My_Request_To_Id");
+
+	EmployeeModel um=new EmployeeModel();
+
+	um.requesttomanagerforapprove(employee_id,managerid,assetid,transferid);
+	
+	
+	
+
+	List<AssetTransferBean> rb=um.viewOtherEmpassetRequest(employee_id);
+		 mv=new ModelAndView("EmpviewAseetrequestByOtherEmp");
+		 
+		 mv.addObject("Employee_request",rb);
+	
+	return mv;
+	
+	
+}
+
+
+
+@RequestMapping("/RequestbyManager")
+public ModelAndView Managerrequesttoemp(HttpSession ss)
+{
+
+	int employee_id=(int) ss.getAttribute("user_session");
+
+	
+	int managerid=(int)ss.getAttribute("My_Request_To_Id");
+
+	EmployeeModel um=new EmployeeModel();
+
+	ArrayList<AssetTransferBean> rb=um.empviewAseetrequestByMe(employee_id,managerid);
+		 mv=new ModelAndView("RequestbyManagerToEmp");
+		 
+		 mv.addObject("Employee_request",rb);
+	
+	return mv;
+}
+// request approve of manager
+
+@RequestMapping("/aprooveTransferrequestManagerrequest")
+public ModelAndView aprooveAssetEmprequest(@RequestParam int fromempid,@RequestParam int assetid,@RequestParam int transferid,@RequestParam int transferstatus,HttpSession ss)
+{
+	
+	int employee_id=(int) ss.getAttribute("user_session");
+	int manager_id=(int) ss.getAttribute("My_Request_To_Id");
+
+	int day, month, year;
+	GregorianCalendar date = new GregorianCalendar();
+	day = date.get(Calendar.DAY_OF_MONTH);
+	month = date.get(Calendar.MONTH);
+	year = date.get(Calendar.YEAR);
+	String approve_date= (year+"/"+(month+1)+"/"+day);
+		
+	System.out.println("Into aprooveEmprequest");
+	
+	System.out.println("managerid"+manager_id);
+	System.out.println("emp frmid"+fromempid);
+	System.out.println("approve datennnnnnnnnnnnnnnnnnnnn"+approve_date);
+	
+	EmployeeModel um= new EmployeeModel();
+	int x=um.approveAssetTransferRequest(fromempid, approve_date, transferid, manager_id, transferstatus);
+
+
+	if(x==1)
+	{
+	//update method	userid
+	um.updateintoallocatedasset(employee_id , fromempid, assetid);
+		//deleted when approved
+		//um.deleteassetswhenapproved(transferid);
+		ArrayList<AssetTransferBean> rb=um.empviewAseetrequestByMe(employee_id, manager_id);
+		 mv=new ModelAndView("RequestbyManagerToEmp");
+		 mv.addObject("approved","Your request for asset has been approved");
+		 mv.addObject("Employee_request",rb);
+	}
+	
+	return mv;
+}
+
+// reject transfer request by employee
+@RequestMapping("/rejectrequestofManagerbyemp")
+public ModelAndView rejectAssetEmprequest(@RequestParam int fromempid,HttpSession ss,@RequestParam int transferid)
+{
+	
+	int day, month, year;
+	GregorianCalendar date = new GregorianCalendar();
+	day = date.get(Calendar.DAY_OF_MONTH);
+	month = date.get(Calendar.MONTH);
+	year = date.get(Calendar.YEAR);
+	String reject_date= (year+"/"+(month+1)+"/"+day);
+
+	int employee_id=(int) ss.getAttribute("user_session");
+	int manager_id=(int) ss.getAttribute("My_Request_To_Id");
+
+EmployeeModel um=new EmployeeModel();
+	
+	int y=new EmployeeModel().rejectAssetTransfer(fromempid,reject_date,transferid,manager_id);
+	if(y==1)
+	{
+	
+		ArrayList<AssetTransferBean> rb=um.empviewAseetrequestByMe(employee_id, manager_id);
+		 mv=new ModelAndView("RequestbyManagerToEmp");
+		 mv.addObject("approved","Your request for asset has been rejected");
+		 mv.addObject("Employee_request",rb);
+	}
+	return mv;
+}
+
+
+
+
+}

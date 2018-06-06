@@ -155,27 +155,33 @@
 .navbar-brand {
     padding: 5px 15px;
 }
+</style>
+<style type="text/css">
 
-
-
-
+body{
+background-image:url('https://imgur.com/p7L8a5E.jpg');
+background-size:cover;
+height:100%;
+}
 </style>
 		
+<script type="text/javascript">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-<script>
+$(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    $(".side-nav .collapse").on("hide.bs.collapse", function() {                   
+        $(this).prev().find(".fa").eq(1).removeClass("fa-angle-right").addClass("fa-angle-down");
+    });
+    $('.side-nav .collapse').on("show.bs.collapse", function() {                        
+        $(this).prev().find(".fa").eq(1).removeClass("fa-angle-down").addClass("fa-angle-right");        
+    });
+})    
+    
 
-
-
-</script> 
-
-	
-	
-
+</script>
 </head>
 
 <body>
-
 <div id="throbber" style="display:none; min-height:120px;"></div>
 <div id="noty-holder"></div>
 <div id="wrapper">
@@ -189,7 +195,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://cijulenlinea.ucr.ac.cr/dev-users/">
+            <a class="navbar-brand" href="">
                 <img src="https://imgur.com/TIiwKNq.jpg" height="60px" width="200px" alt="LOGO"">
             </a>
         </div>
@@ -199,50 +205,32 @@
                 </a>
             </li>            
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Employee <b class="fa fa-angle-down"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin User <b class="fa fa-angle-down"></b></a>
                 <ul class="dropdown-menu">
-
-                    <li><a href="./change_password"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
+                    <li><a href="adminchangepassword"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
                     <li class="divider"></li>
-                    <li><a href="./logout"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
+                    <li><a href="./adminlogout"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
                 </ul>
             </li>
         </ul>
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                 <li>
-                    <a href="#" data-toggle="collapse" data-target=""> </a>
+                <li>
+                    <a href="#" data-toggle="collapse" data-target="#submenu-1"> </a>
                     
                 </li>
                 <li>
-                    <a href="#" data-toggle="collapse" data-target=""> </a>
+                    <a href="createuser" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-user-plus"> </i> CREATE NEW USER </i></a>
                    
-                </li>
-                 <li>
-                    <a href="./Empviewmyprofile" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-user"> </i> Profile </i></a>
-                   
-                </li>
-                 <li>
-                    <a href="./createrequestbyemp" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-user"> </i> CREATE ASSET REQUEST </i></a>
-                   
-                </li>
-                
-                <li>
-                    <a href="./EmpViewmyrequest"><i class="fa fa-fw fa-user"></i>VIEW MY ASSET REQUEST STATUS</a>
                 </li>
                 <li>
-                    <a href="./Myasset"><i class="fa fa-fw fa-question-circle"></i>MY ASSETS</a>
+                    <a href="viewusers"><i class="fa fa-fw fa-user"></i> VIEW USERS</a>
                 </li>
-                  <li>
-                    <a href="#" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-fw fa-search"></i> ASSET TRANSFER <i class="fa fa-fw fa-angle-down pull-right"></i></a>
-                    <ul id="submenu-1" class="collapse">
-                        <li><a href="./empViewAllAssets"><i class="fa fa-angle-double-right"></i> VIEW ALL ALLOCATED ASSETS</a></li>
-                        <li><a href="./EmpviewAseetrequestByOtherEmp"><i class="fa fa-angle-double-right"></i> VIEW ASSET REQUEST BY OTHER EMPLOYEE</a></li>
-                        <li><a href="./EmpviewAseetrequestByMe"><i class="fa fa-angle-double-right"></i> VIEW MY ASSET TRANSFER STATUS</a></li>
-                                            <li><a href="./RequestbyManager"><i class="fa fa-angle-double-right"></i> MANAGER REQUEST TO EMP FOR AN ASSETS</a></li>
-                    </ul>
+                <li>
+                    <a href="retriveAllocatedAssets"><i class="fa fa-fw fa-question-circle"></i>VIEW ALLOCATED ASSET</a>
                 </li>
+               
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -253,8 +241,10 @@
             <!-- Page Heading -->
             <div class="row" id="main" >
                 <div class="col-sm-12 col-md-12 well" id="content">
-				<h1>Welcome Employee</h1>
-                <h4>Employee ID ${user_session}</h4>                      </div>
+                    <h2>Welcome Admin!</h2>
+                    <h3>UserId: ${admin_session}</h3>
+                    
+                </div>
             </div>
             <!-- /.row -->
         </div>
@@ -264,24 +254,23 @@
 </div><!-- /#wrapper -->
 
 
- 
-
-
 
 <center>
 
+<h1>view all assets</h1>
 
-<h1>My assets</h1>
+
+
+
 <table border="1">
 
-<tr><th>AssetID</th><th>AssetName<th>Emailid </th><th> Userid </th><th>Allocation date</th></tr>
+<tr><th>AssetID</th><th>AssetName<th>Emailid </th><th> Asset holder </th><th>Allocation date</th></tr>
 
 	
 
 <%@page import="java.util.List,com.asset_management.beans.*"%>
 <%
-List<AllocatedAssetsBean> ar=(List<AllocatedAssetsBean>)request.getAttribute("LIST");
-
+List<AllocatedAssetsBean> ar=(List<AllocatedAssetsBean>)request.getAttribute("assetlist");
 
 
 
@@ -289,19 +278,25 @@ for(AllocatedAssetsBean ab:ar)
 {
 
 %>
+<form action="./ManagerAskforasset" method="post">
 <tr>
-<td><%=ab.getAssetid()%></td>
-<td><%=ab.getAssetname()%></td>
-<td> <%=ab.getEmailid()%></td>
-<td><%=ab.getUserid()%></td>
+<td><input  name="assetid" value="<%=ab.getAssetid()%>" readonly></td>
+<td><input name="assetname" value="<%=ab.getAssetname()%>"readonly></td>
+<td><input  name="emailid" value="<%=ab.getEmailid()%>"readonly ></td>
+<td><input  name="toempid" value="<%=ab.getUserid()%>"readonly></td>
+
 <td><%=ab.getDateofallocation()%></td>
 
 
+<%}
+	
+ %>
 
 </tr>
-<% 
-}
-%>
+</form>
+
+
+
 </table>
 
 

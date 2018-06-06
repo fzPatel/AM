@@ -1,69 +1,228 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>user registration form validation using javascript with example</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<style type="text/css">
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
 
-body{
-background-image:url('https://imgur.com/p7L8a5E.jpg');
-background-size:cover;
-height:100%;
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+   body
+   {
+     background-image:url(https://imgur.com/uILsCFL.jpg);
+     background-repeat:no-repeat;
+     background-size:cover;
+     font-family: 'Lato', sans-serif;
+   }
+
+   footer
+   {
+     background-color: rgba(94, 94, 94, 0.40);
+     position: fixed;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     padding: 0.3rem;
+     text-align: center;
+     color:white;
+   }
+
+   #login-dp{
+    min-width: 250px;
+    padding: 14px 14px 0;
+    overflow:hidden;
+    background-color:rgba(94, 94, 94, 0.40);
+    color:white;
 }
+#login-dp .help-block{
+    font-size:12px
+}
+#login-dp .bottom{
+    background-color:rgba(94, 94, 94, 0.40);
+    border-top:1px solid #ddd;
+    clear:both;
+    padding:14px;
+}
+#login-dp .social-buttons{
+    margin:12px 0
+}
+#login-dp .social-buttons a{
+    width: 49%;
+}
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+.btn-fb{
+    color: #fff;
+    background-color:#3b5998;
+}
+.btn-fb:hover{
+    color: #fff;
+    background-color:#496ebc
+}
+.btn-tw{
+    color: #fff;
+    background-color:#55acee;
+}
+.btn-tw:hover{
+    color: #fff;
+    background-color:#59b5fa;
+}
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
+}
+
+
 </style>
+
 
 </head>
 
 <body>
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<a href="backtoindex">back</a>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+
+    </head>
+
+    <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="backtoindex">Back</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <li><a href="#">News</a></li>
+      <li><a href="#">Pictures</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    
+    <ul class="nav navbar-nav navbar-right">
+
+<ul class="nav navbar-nav navbar-right">
+
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
+<ul id="login-dp" class="dropdown-menu">
+  <li>
+     <div class="row">
+        <div class="col-md-12">
+          Login via
+          
+          
+          
+          <div class="social-buttons">
+            <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
+            <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
+          </div>
+                          or
+           <form class="form" role="form" action="./userlogin" method="post" accept-charset="UTF-8" id="login-nav">
+              <div class="form-group">
+                 <label class="sr-only" for="exampleInputEmail2">User-ID</label>
+                 <input type="text" class="form-control" maxlength="3" name="userid" placeholder="User-id" required>
+              
+              </div>
+              <div class="form-group">
+                 <label class="sr-only" for="exampleInputPassword2">Password</label>
+                 <input type="password" class="form-control" name="password" id="exampleInputPassword2" placeholder="Password" required>
+                                       <div class="help-block text-right"><a href="./forgetpwd">Forget the password ?</a></div>
+              </div>
+              <div class="form-group">
+                 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+              </div>
+              <div class="checkbox">
+                 <label>
+                 <input type="checkbox"> keep me logged-in
+                 </label>
+              </div>
+           </form>
+        </div>
+       
+     </div>
+  </li>
+</ul>
+  </li>
+</ul>
+    </ul>
+</div><!-- /.navbar-collapse -->
+      </div>
+    </nav>
 
 
-${loginFailedmsg}
-<%-- <%
-	String user_designation=(String)session.getAttribute("user_designation");
-	if(user_designation.equals("employee"))
-	{
-		response.sendRedirect("employee_home.jsp");
-	}
-	else if(user_designation.equals("manager"))
-	{
-		response.sendRedirect("manager_home.jsp");
-	}
-	else if(user_designation.equals("support"))
-	{
-		response.sendRedirect("support_home.jsp");
-	}
-	else if(user_designation==null)
-	{
-%> --%>
-	<center>
-		<font color="orange"><h1>User Login</h1></font>
-			<table><form action="./userlogin" method="post">
-				
-					<!-- <tr>
-						<td>
-							<select name="designation" id="designation">
-								<option value="manager" >manager</option>
-								<option value="employee">employee</option>
-								<option value="support">support</option>
-							</select>
-						</td>
-					</tr>   -->
-					
-					<tr><td>User Id</td><td><input type="text" maxlength="3" name="userid" required/></td></tr>
-					<tr><td>Password</td><td><input type="password" name="password" required/></td></tr>
-					<td><input type="submit" name="submit" value="submit"/></td>
-					<td><input type="reset" name="reset" value="reset"/></td>
-				
-			</form></table>
+
+
+
+
+
+<font color="Red"><h1>${loginFailedmsg}</h1></font>
+
+</br></br></br></br></br>
+<center>
+		<font color="red" size="16px">Asset Management System</font>
 			
-	</center>
-<%-- <%
-	}
-%> --%>
+			
+</center>
+
+
+
+
+      <footer>
+        <p>© AFW systango 2017</p>
+      </footer>
+    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src="js/main.js"></script>
+    </body>
+</html>
+
+
+
+
 </body>
 </html>

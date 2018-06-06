@@ -27,16 +27,20 @@ import com.asset_management.models.SupportModel;
 
 public class SupportController {
 ModelAndView mv=null;
+
 	@ModelAttribute
 	public void addCommonObject(Model m)
 	{
+		//-------------adding common object for each and every jsp---------------------
 		m.addAttribute("oh","Asset Management");
 	}
 	
 	@RequestMapping("/logout") 
 	public ModelAndView Logout(HttpSession session)
 	{	
-		mv=new ModelAndView("user_login");			
+		//------------------transferring control to the index page----------------------
+		mv=new ModelAndView("index");	
+		//------------------destroying every session-----------------------
 		session.invalidate();
 		return mv;
 	}
@@ -44,13 +48,18 @@ ModelAndView mv=null;
 	@RequestMapping("/supporthome") 
 	public ModelAndView supporthome()
 	{	
+		//------------------transferring control to the support home page----------------------
 		mv=new ModelAndView("support_home");		
 		return mv;
 	}
 	
 	@RequestMapping("/viewassetrequest")
-	public ModelAndView viewassetrequest(@RequestParam String usersession)
+	public ModelAndView viewassetrequest(HttpSession session)
 	{
+		//------------------fetching the support session ----------------------
+		String usersession =(String)session.getAttribute("user_session");
+		
+		//------------------retriving the asset requests to the logged in support----------------------
 		ArrayList<RequestBean> al=new SupportModel().retriveRequests(usersession);
 		if(al.isEmpty())
 		{		
@@ -59,7 +68,9 @@ ModelAndView mv=null;
 		}
 		else
 		{
+			/*transferring the control back to the show_requests.jsp*/
 			mv=new ModelAndView("show_requests");
+			/*fetching the request data because, show_request accepting the array list to view_reports.jsp*/
 			mv.addObject("requests_arraylist", al);
 			
 		}
@@ -71,10 +82,14 @@ ModelAndView mv=null;
 	public ModelAndView viewreports()
 	{
 //		int usersession1=Integer.parseInt(usersession);
+		/*retriving all the reports from AllocatedAssets*/
 		ArrayList<AllocatedAssetsBean> al=new SupportModel().retriveReports();
 		if(al!=null)
 		{
+			/*transferring the control back to the view_reports.jsp*/
 			mv=new ModelAndView("view_reports");
+			
+			/*fetching the request data because, show_request accepting the array list to view_reports.jsp*/
 			mv.addObject("reports_arraylist", al);
 			
 		}
@@ -82,20 +97,23 @@ ModelAndView mv=null;
 	}
 	
 	@RequestMapping("/approveandinsert")
+	/*fetching the values of hidden fields from show_requests*/
 	public ModelAndView approveandinsert(@RequestParam String assetname,@RequestParam String dateofallocation,@RequestParam int supportid,@RequestParam String emailid,@RequestParam int employeeid,@RequestParam int requestid)
 	{	
 		System.out.println("inside supportcontroller---->approveandinsert()");
 		
-		
+		/*approving the request in RequentBean POJO*/
 		int y=new SupportModel().approve(employeeid,requestid);
+		/*inserting into table of AllocatedAssetsBean POJO*/
 		int w=new SupportModel().insert(employeeid,assetname,dateofallocation,supportid,emailid);
-//		int y=new SupportModel().approveAndInsert(assetname,dateofallocation,supportid,emailid,employeeid,requestid);
-//		String assetname,String dateofallocation,int supportid,String emailid,
 		if(w==1 && y==1)
 		{
+			/*transferring the control back to the show_requests*/
 			mv=new ModelAndView("show_requests");
 			String support_session1=supportid+"";
-			ArrayList<RequestBean> al=new SupportModel().retriveRequests(support_session1);			
+			/*fetching the request data because, show_request accepting the array list to show data*/
+			ArrayList<RequestBean> al=new SupportModel().retriveRequests(support_session1);
+			/*adding object*/
 			mv.addObject("requests_arraylist", al);
 			
 		}
@@ -106,15 +124,20 @@ ModelAndView mv=null;
 	
 	
 	@RequestMapping("/cancelrequest")
+	/*fetching the values of hidden fields from show_requests*/
 	public ModelAndView cancelrequest(@RequestParam int supportid,@RequestParam int employeeid,@RequestParam int requestid,HttpSession ss)
 	{		
+		/*fetching the user id of support from the session*/
 		int support_session=(Integer)ss.getAttribute("support_session");
 		
+		/*cancelling the request*/
 		int y=new SupportModel().cancelRequest(supportid,employeeid,requestid);
 		if(y==1)
 		{
+			/*transferring the control back to the show_requests*/
 			mv=new ModelAndView("show_requests");
 			String support_session1=supportid+"";
+			/*fetching the request data because, show_request.jsp accepting the array list to show data*/
 			ArrayList<RequestBean> al=new SupportModel().retriveRequests(support_session1);				
 			
 			mv.addObject("requests_arraylist", al);
@@ -129,18 +152,25 @@ ModelAndView mv=null;
 	@RequestMapping("/changesupportpassword")
 	public ModelAndView supportchangepassword()
 	{
+		/*forwarding the control to support_change_password*/
 		mv=new ModelAndView("support_change_password");
 		return mv;
 	}
+	
 	@RequestMapping("/supportpasswordchanged")
+	/*fetching the values of fields from support_change_password*/
 	public ModelAndView supportpasswordchanged(HttpSession ss,@RequestParam String password,@RequestParam String user_designation)
 	{
+		/*retriving the user id of support from session_*/
 		int support_session=(Integer)ss.getAttribute("support_session");
 		
+		/*method to update the password of support*/
 		int y=new SupportModel().updateNewPassword(support_session,password,user_designation);
 		if(y!=0)
 		{
+			/*forwarding the control to support_home*/
 			mv=new ModelAndView("support_home");
+			/*forwarding the message*/
 			mv.addObject("passwordchanged","password has been changed");
 		}
 		
@@ -152,8 +182,12 @@ ModelAndView mv=null;
 	
 	
 	@RequestMapping("/SupportPasswordExistsOrNot")
-	public ModelAndView SupportPasswordExistsOrNot(@RequestParam int supportid)
+	public ModelAndView SupportPasswordExistsOrNot(HttpSession ss)
 	{
+		
+		
+		int supportid=(Integer)ss.getAttribute("support_session");
+
 		System.out.println("Controller mai Password checking chala.......");
 		 
 		 String password=new SupportModel().checkExistanceOfSupportPassword(supportid);
@@ -166,11 +200,19 @@ ModelAndView mv=null;
 	
 	
 	@RequestMapping("/retrivesupportdetails")
-	public ModelAndView supportProfileUpdate(@RequestParam int supportid)
+	/*getting the user id of support with session*/
+	public ModelAndView supportProfileUpdate(HttpSession ss)
 	{
-		
-		ArrayList<UserBean> al=new SupportModel().retriveSupportDetails(supportid);
+		/*getting the user id of support with session*/
+		int supportid=(Integer)ss.getAttribute("support_session");
+
+		 /*retriving all the details of support corresponding to the user id of support*/
+		 ArrayList<UserBean> al=new SupportModel().retriveSupportDetails(supportid);
+		 
+		 /*transferring the control to support_profile_update*/
 		 mv=new ModelAndView("support_profile_update");
+		 
+		 /*setting the array list and sending to support_profile_update*/
 		 mv.addObject("supportdetails",al);
 		return mv;
 	}
@@ -245,23 +287,39 @@ ModelAndView mv=null;
 	
 	
 	@RequestMapping("/updatesupportprofile") 
-	public ModelAndView updateSupportProfile(@RequestParam int supportid,@RequestParam String firstname,@RequestParam String lastname,@RequestParam String emailid,@RequestParam String mobile,@RequestParam String password)
+	/*fetching the value of fields from support_profile_update.jsp*/
+	public ModelAndView updateSupportProfile(HttpSession ss,@RequestParam String firstname,@RequestParam String lastname,@RequestParam String emailid,@RequestParam String mobile,@RequestParam String password)
 	{	
+		/*getting the user id of support from session*/
+		int supportid=(Integer)ss.getAttribute("support_session");
+
 		
+		/*update the profile of support with*/
 		int x=new SupportModel().updateSupportProfile(supportid,firstname,lastname,emailid,mobile,password); 
 		 System.out.println("Support id="+supportid);
 		if(x!=0)
 		{
+			
+			/*retriving the details of support*/
 			ArrayList<UserBean> al=new SupportModel().retriveSupportDetails(supportid);
+			
+			/*forwarding the control to support_profile_update.jsp*/
 			 mv=new ModelAndView("support_profile_update");
+			 /*forwarding the array list*/
 			 mv.addObject("supportdetails",al);
+			 /*forwarding the message*/
 			 mv.addObject("supportdetailsupdated","Support profile Updated");
 		}
 		else
 		{
+			/*retriving the details of particular support corresponding to support id*/
 			ArrayList<UserBean> al=new SupportModel().retriveSupportDetails(supportid);
+			
+			/*forwarding control to support_profile_update*/
 			 mv=new ModelAndView("support_profile_update");
+			 /*forwarding the array list*/
 			 mv.addObject("supportdetails",al);
+			 /*forwarding the message*/
 			 mv.addObject("supportdetailsnotupdated","Failed to update support profile ");
 		}
 		

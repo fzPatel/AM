@@ -19,20 +19,17 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.criterion.Restrictions;
 import com.asset_management.beans.AdminBean;
+import com.asset_management.beans.AllocatedAssetsBean;
+import com.asset_management.beans.AssetTransferBean;
 import com.asset_management.beans.UserBean;
 import com.asset_management.mail.Email;
 
 
 
 public class AdminModel {
-	
-	
-	
-	
 	public int adminLoginCheck(AdminBean ab)
 	{
 		int x=0;
-		
 		
 		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
 		org.hibernate.Session ss=sf.openSession();
@@ -45,8 +42,8 @@ public class AdminModel {
 		Criteria ct=ss.createCriteria(AdminBean.class);
 		
 		
-		ct.add(Restrictions.eq("emailid",ab.getEmailid()));
-		ct.add(Restrictions.eq("password",ab.getPassword()));
+		ct.add(Restrictions.eq("id",ab.getEmailid()));
+		ct.add(Restrictions.eq("pass",ab.getPassword()));
 		
 		
 		List<AdminBean> list=ct.list();
@@ -64,11 +61,7 @@ public class AdminModel {
 		return x;
 	}
 	
-	
-	
-	
-	
-	
+
 	public Object insertUser(UserBean ub)
 	{
 		Integer x=0;
@@ -444,14 +437,6 @@ public class AdminModel {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	public int active(String emailid)
 	{
 	
@@ -475,9 +460,6 @@ public class AdminModel {
 		return x;
 
 	}
-	
-	
-	
 	
 	public int deactive(String emailid)
 	{
@@ -506,9 +488,7 @@ public class AdminModel {
 	
 		try
 		{
-						
-
-
+		
 			SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
 			org.hibernate.Session ss=sf.openSession();
 			Transaction tx1=ss.beginTransaction();
@@ -659,5 +639,79 @@ public int getMyOldPassword(String oldpassword,String emailid)
 	
 }
 	
+
+
+
+
+
+public int promotionAndDemotion(UserBean ub)
+{
 	
+	int x=0;
+	try
+	{
+		SessionFactory sf=new AnnotationConfiguration().configure().buildSessionFactory();
+		org.hibernate.Session ss=sf.openSession();
+		Transaction tx1=ss.beginTransaction();
+		if(ub.getDesignation().equals("employee"))
+		{
+			Query q=ss.createQuery("update UserBean set employeeid=:a,managerid=:b,supportid=:c,designation=:d where emailid=:e");
+			q.setInteger("a",ub.getNewemployeeid());
+			q.setInteger("b",ub.getManagerid());
+			q.setInteger("c",0);
+			q.setString("d",ub.getDesignation());
+			q.setString("e",ub.getEmailid());
+			x=q.executeUpdate();
+		}
+		else if(ub.getDesignation().equals("manager"))
+		{
+			Query q=ss.createQuery("update UserBean set managerid=:a,supportid=:b,employeeid=:c,designation=:d where emailid=:e");
+			q.setInteger("a",ub.getNewmanagerid());
+			q.setInteger("b",ub.getSupportid());
+			q.setInteger("c",0);
+			q.setString("d",ub.getDesignation());
+			q.setString("e",ub.getEmailid());
+			x=q.executeUpdate();
+		}
+		else if(ub.getDesignation().equals("support"))
+		{
+			Query q=ss.createQuery("update UserBean set supportid=:a,employeeid=:b,managerid=:c,designation=:d where emailid=:e");
+			q.setInteger("a",ub.getNewsupportid());
+			q.setInteger("b",0);
+			q.setInteger("c",0);
+			q.setString("d",ub.getDesignation());
+			q.setString("e",ub.getEmailid());
+			x=q.executeUpdate();
+		}
+		
+		
+		tx1.commit();
+		ss.close();
+			
+	}
+	catch(Exception e)
+	{e.printStackTrace();}
+	return x;
+			
+}
+
+public List<AllocatedAssetsBean> viewallcatedasset()
+{
+	
+		SessionFactory sf= new AnnotationConfiguration().configure().buildSessionFactory();
+					org.hibernate.classic.Session ss=sf.openSession();//creating session object
+		Criteria ct = ss.createCriteria(AllocatedAssetsBean.class);	
+
+	    List<AllocatedAssetsBean>list=ct.list();
+	    if(!list.isEmpty())
+	   {
+		   System.out.println("not Empty");
+	   }
+	     
+	    
+	   ss.close();//close session
+				return list;    //return arraylist object
+	
+		
+	}
 }

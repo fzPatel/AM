@@ -1,19 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
-<%@page import="java.util.List,com.asset_management.beans.AllocatedAssetsBean,java.util.ArrayList"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
-<title>Insert title here</title>
-
-
-
-
-		<style type="text/css">
+<style type="text/css">
 
 body{
 background-image:url('https://imgur.com/BPE2EiH.jpg');
@@ -21,13 +8,10 @@ background-size:cover;
 height:100%;
 }
 </style>
-		
 </head>
 
-
-
-
 <body>
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -47,45 +31,82 @@ height:100%;
     </div>
   </div>
 </nav>
+<h1>Asset transfer</h1>
+
+<h2>${requestmsg}</h2>
+
 
 <%
-	List<AllocatedAssetsBean> ll=(List<AllocatedAssetsBean>)request.getAttribute("List");
-%>
-<tr>
-<form method="post">
+int user=(int)session.getAttribute("user_session");
 
-From Emp Id <tr><td> <input type="text" value="<%=session.getAttribute("user_session")%>"  name="employeeid"></td></tr>
-Manager Id   <tr><td> <input type="text" value="<%=session.getAttribute("My_Request_To_Id")%>" name="managerid"></td></tr>
-To Emp Id   <tr><td> <input type="text" name="toempid"/></td></tr>
-Asset Name <tr><td><select name="assetname">
+%>
+
+<table border="1">
+
+<tr><th>AssetID</th><th>AssetName<th>Emailid </th><th> Transfer From </th><th>Allocation date</th><th>Transfer To </th><th>Action</th></tr>
+
+	
+
+<%@page import="java.util.List,com.asset_management.beans.*"%>
+<%
+List<UserBean> ar1=(List<UserBean>)request.getAttribute("emplist");
+List<AllocatedAssetsBean> ar=(List<AllocatedAssetsBean>)request.getAttribute("LIST");
+
+
+
+
+for(AllocatedAssetsBean ab:ar)
+{
+
+%>
+<form action="./trasferassetrequest" method="post">
+<tr>
+<td><input type="text" name="assetid" value="<%=ab.getAssetid()%>" readonly></td>
+<td><input type="text" name="assetname" value="<%=ab.getAssetname()%>"readonly></td>
+<td><input type="text" name="emailid" value="<%=ab.getEmailid()%>"readonly ></td>
+<td><input type="text" name="fromempid" value="<%=ab.getUserid()%>"readonly></td>
+<td><%=ab.getDateofallocation()%></td>
+
+
+
+<td> <select name="toempid">
 		<%
-		for(AllocatedAssetsBean aab:ll)
-		{
-			String x=aab.getAssetname();
-			int y=aab.getAssetid();
-		%>
-	<option value="<%=x%>"><%=x%> Asset ID <%=y%> </option>
-		<%
-		}
-		%>
-</select></td></tr>
-Asset ID<tr><td> <select name="assetid">
-		<%
-		for(AllocatedAssetsBean aab:ll)
+		for(UserBean aab:ar1)
 		{
 		
-			int x=aab.getAssetid();
+			int x=aab.getEmployeeid();
 		%>
 	<option value="<%=x%>"><%=x%></option>
 		<%
 		}
 		%>
-</select></td></tr>
-<input type="submit"   value="TransferAssets" name="submit"/>
+</select></td>
 
+
+
+
+<%if(ab.getUserid()!=user) 
+{%>
+<td><input type="submit" value="ask for asset"></td>
+
+<%}else
+	
+{
+%>
+
+
+<td><input type="submit" value="Transfer"></td>
+
+
+<%	
+	
+} %>
 
 </form>
+</tr>
+<% 
+}
+%>
+</table>
 
-
-</body>
-</html>
+</center>
